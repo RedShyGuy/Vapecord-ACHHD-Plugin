@@ -40,20 +40,17 @@ namespace CTRPluginFramework
 	}
 
 	void coordmod(MenuEntry *entry) {
-		if(entry->Hotkeys[0].IsDown()) {
-			if(GameHelper::GetCoordinates() != 0) {
-				if(GameHelper::Outside()) {
-					if (entry->Hotkeys[1].IsDown()) SUB32(0x33673410, cspeed); //DPadLeft
-					if (entry->Hotkeys[2].IsDown()) ADD32(0x33673410, cspeed); //DpadRight
-					if (entry->Hotkeys[3].IsDown()) SUB32(0x33673408, cspeed); //DpadUp
-					if (entry->Hotkeys[4].IsDown()) ADD32(0x33673408, cspeed); //DpadDown
-				}
-				else {
-					if (entry->Hotkeys[1].IsDown()) SUB32(0x33672A08, cspeed); //DPadLeft
-					if (entry->Hotkeys[2].IsDown()) ADD32(0x33672A08, cspeed); //DpadRight
-					if (entry->Hotkeys[3].IsDown()) SUB32(0x33672A00, cspeed); //DpadUp
-					if (entry->Hotkeys[4].IsDown()) ADD32(0x33672A00, cspeed); //DpadDown
-				}
+		if(entry->Hotkeys[0].IsDown()) {//A
+			volatile float *pCoords = GameHelper::GetCoordinates();
+			if(pCoords != nullptr) {// if not in tile selection mode & valid player obj
+				if(entry->Hotkeys[1].IsDown()) 
+					*pCoords += cspeed; //DPadRight
+				if(entry->Hotkeys[2].IsDown()) 
+					*pCoords -= cspeed; //DPadLeft
+				if(entry->Hotkeys[3].IsDown()) 
+					*((float *)((vu32)pCoords + 8)) += cspeed; //DPadDown
+				if(entry->Hotkeys[4].IsDown()) 
+					*((float *)((vu32)pCoords + 8)) -= cspeed; //DPadUp
 			}
 		}
 	}

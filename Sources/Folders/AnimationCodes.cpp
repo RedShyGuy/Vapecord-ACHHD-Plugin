@@ -47,13 +47,13 @@ namespace CTRPluginFramework
 		}
 		
 		if(Controller::IsKeysPressed(entry->Hotkeys[2].GetKeys())) {
-			GameHelper::AnimationWrapper(AnimID, EmoteID, ItemID);
+			Animation::AnimationWrapper(AnimID, EmoteID, ItemID);
 		}
 	}
 	
 	void idle(MenuEntry *entry) {
 		if(entry->Hotkeys[0].IsDown()) {
-			GameHelper::AnimationWrapper(3, 0, 0);
+			Animation::AnimationWrapper(3, 0, 0);
 		}
 	}
 }

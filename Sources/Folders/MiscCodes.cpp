@@ -4,11 +4,9 @@ namespace CTRPluginFramework
 {
 	//0496D4C    sub_496CAC+A0   496F5C
 	bool debugOSD(const Screen &screen) {	
-		u8 room = *(u8 *)0x738CE9;
-		u8 anim = GameHelper::GetCurrentAnim();
 		if(screen.IsTop) {
-			screen.Draw("Room: " << Hex(room), 0, 0);
-			screen.Draw("Animation: " << Hex(anim), 0, 10);
+			screen.Draw("Room: " << Hex(*(u8 *)0x738CE9), 0, 0);
+			screen.Draw("Animation: " << Hex(Animation::GetCurrentAnim()), 0, 10);
 		}
 		return 1;
 	} 

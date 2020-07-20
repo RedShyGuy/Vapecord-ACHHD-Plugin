@@ -2,10 +2,10 @@
 #define CHEATS_H
 
 #include "CTRPluginFramework.hpp"
-#include "GameHelper.hpp"
+#include "Helpers/GameHelper.hpp"
+#include "Helpers/Animation.hpp"
 #include "CTRPluginFramework/System/Rect.hpp"
 #include "MenuEntryhelpers.hpp"
-#include "text_color.h"
 #include "ctrulib/util/utf.h"
 #include <cmath>
 #include <algorithm>
