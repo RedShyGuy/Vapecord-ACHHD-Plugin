@@ -1,4 +1,6 @@
 @echo off
-make re
-3gxtool objdump CTRPluginFramework.plgInfo ACHHD.3gx
+cls
+make clean
+make
+rd /s /q Build
 pause

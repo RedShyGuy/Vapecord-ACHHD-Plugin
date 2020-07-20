@@ -39,10 +39,10 @@ namespace CTRPluginFramework
 	std::string specialred = "" << SpecialRed << "";
 	
 	Color SaveCodes(0xFF0033FF);
-	Color MovementCodes(0xE10033FF);
-	Color PlayerCodes(0xCD0033FF);
-	Color AnimationCodes(0xBE0033FF);
-	Color MiscCodes(0xAF0033FF);
+	Color MovementCodes(0xFF0033FF);
+	Color PlayerCodes(0xFF0033FF);
+	Color AnimationCodes(0xFF0033FF);
+	Color MiscCodes(0xFF0033FF);
 	
 	static MenuEntry *EntryWithHotkey(MenuEntry *entry, const Hotkey &hotkey) {
         if (entry != nullptr) {
@@ -103,8 +103,8 @@ namespace CTRPluginFramework
 			MenuFolder *A = nullptr, *B = nullptr, *C = nullptr, *D = nullptr, *E = nullptr;
 
 			A = new MenuFolder(Color(SaveCodes) << "Save Codes");
-			A->Append(new MenuEntry(Color(PlayerCodes) << "Save Dumper" , nullptr, savedump, "Test.")),
-			A->Append(new MenuEntry(Color(PlayerCodes) << "Save Restore" , nullptr, saverestore, "Test.")),
+			//A->Append(new MenuEntry(Color(PlayerCodes) << "Save Dumper" , nullptr, savedump, "Test.")),
+			//A->Append(new MenuEntry(Color(PlayerCodes) << "Save Restore" , nullptr, saverestore, "Test.")),
 			menu->Append(A);
 			
 			B = new MenuFolder(Color(MovementCodes) << "Movement Codes");
@@ -118,7 +118,7 @@ namespace CTRPluginFramework
 			menu->Append(C);
 	
 			D = new MenuFolder(Color(AnimationCodes) << "Animation Codes");
-			D->Append(EntryWithHotkey(new MenuEntry(Color(SaveCodes) << "Set Animation", setanim, "Test."),{ Hotkey(Key::X | Key::A, "Set Animation ID"), Hotkey(Key::A | Key::B, "Execute Animation") })),
+			D->Append(EntryWithHotkey(new MenuEntry(Color(SaveCodes) << "Set Animation", setanim, "Test."),{ Hotkey(Key::A | Key::DPadRight, "Set Mode"), Hotkey(Key::A | Key::DPadLeft, "Input ID"), Hotkey(Key::A | Key::B, "Execute Mode") })),
 			D->Append(EntryWithHotkey(new MenuEntry(Color(AnimationCodes) << "Idle", idle, "Press the buttons to reset your animation."),{ Hotkey(Key::R, "Idle") })),
 			menu->Append(D);
 			

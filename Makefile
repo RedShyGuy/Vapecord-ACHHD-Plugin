@@ -13,7 +13,9 @@ PLGINFO 	:= 	CTRPluginFramework.plgInfo
 BUILD		:= 	Build
 INCLUDES	:= 	Includes
 LIBDIRS		:= 	$(TOPDIR)
-SOURCES 	:= 	Sources
+SOURCES 	:= 	Sources \
+				Sources/Folders \
+				Sources/Helpers
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -67,7 +69,7 @@ all: $(BUILD)
 
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
-	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
+	@$(MAKE) -s --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
 #---------------------------------------------------------------------------------
 clean:
