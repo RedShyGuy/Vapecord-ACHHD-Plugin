@@ -8,11 +8,11 @@ namespace CTRPluginFramework
 			switch(*(u32 *)0x4DB0F8) {
 				case 0xE3A09001:
 					Process::Write32(0x4DB0F8, 0xE3A09000);
-					OSD::Notify("Walk Over Things" << Color::Green << "ON");
+					OSD::Notify("Walk Over Things " << Color::Green << "ON");
 				break;
 				case 0xE3A09000:
 					Process::Write32(0x4DB0F8, 0xE3A09001);
-					OSD::Notify("Walk Over Things" << Color::Red << "OFF");
+					OSD::Notify("Walk Over Things " << Color::Red << "OFF");
 				break;
 			}
 		}
@@ -40,17 +40,17 @@ namespace CTRPluginFramework
 	}
 
 	void coordmod(MenuEntry *entry) {
-		if(entry->Hotkeys[0].IsDown()) {//A
+		if(entry->Hotkeys[0].IsDown()) {
 			volatile float *pCoords = GameHelper::GetCoordinates();
-			if(pCoords != nullptr) {// if not in tile selection mode & valid player obj
+			if(pCoords != nullptr) {
 				if(entry->Hotkeys[1].IsDown()) 
-					*pCoords += cspeed; //DPadRight
+					*pCoords -= cspeed;
 				if(entry->Hotkeys[2].IsDown()) 
-					*pCoords -= cspeed; //DPadLeft
+					*pCoords += cspeed;
 				if(entry->Hotkeys[3].IsDown()) 
-					*((float *)((vu32)pCoords + 8)) += cspeed; //DPadDown
+					*((float *)((vu32)pCoords + 8)) -= cspeed;
 				if(entry->Hotkeys[4].IsDown()) 
-					*((float *)((vu32)pCoords + 8)) -= cspeed; //DPadUp
+					*((float *)((vu32)pCoords + 8)) += cspeed;
 			}
 		}
 	}

@@ -5,10 +5,21 @@ namespace CTRPluginFramework
 {
 //Get Current Animation	
 	u8 Animation::GetCurrentAnim() {
-		if(Outside()) 
-			return *(u8 *)0x33673AC8;
-		else 
-			return *(u8 *)0x336730C0;
+		u32 player = GameHelper::GetPInstance();
+		//If player is not loaded return
+		if(player == 0)
+			return 0;
+		
+		return(*(u8 *)(player + 0x710));
+	}
+//Get Current Snake Animation
+	u16 Animation::GetCurrentSnake() {
+		u32 player = GameHelper::GetPInstance();
+		//If player is not loaded return
+		if(player == 0)
+			return 0;
+		
+		return(*(u8 *)(player + 0x728));
 	}
 //Get Animation Instance
 	u32 Animation::GetAnimationInstance() {
@@ -60,7 +71,7 @@ namespace CTRPluginFramework
 		else if(animID == 0x42) {
 			Process::Write8(animInstance + 0x1C, item);
 			Process::Write8(animInstance + 0x20, emotion);
-			Process::Write16(animInstance + 0x44, 0x02880000);
+			Process::Write32(animInstance + 0x44, 0x02880000);
 		}
 		//hold item
 		else if(animID == 0x43) {

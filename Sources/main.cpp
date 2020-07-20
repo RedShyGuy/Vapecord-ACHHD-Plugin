@@ -7,37 +7,6 @@
 
 namespace CTRPluginFramework
 {	
-	Color White(255, 255, 255);
-	std::string white = "" << White << "";
-	Color Crimson(220, 20, 60);
-    std::string crimson = "" << Crimson << "";
-	Color PaleGreen(152, 251, 152);
-	std::string palegreen = "" << PaleGreen << "";
-	Color Coral(255, 127, 80);
-	std::string coral = "" << Coral << "";
-	Color BlueViolet(138, 43, 226);
-	std::string blueviolet = "" << BlueViolet << "";
-	Color MidnightBlue(25, 25, 112);
-	std::string midnightblue = "" << MidnightBlue << "";
-	Color GoldenRod(218, 165, 32);
-	std::string goldenrod = "" << GoldenRod << "";
-	Color LightSeaGreen(32, 178, 170);
-	std::string lightseagreen = "" << LightSeaGreen << "";
-	Color Salmon(250, 128, 114);
-	std::string salmon = "" << Salmon << "";
-	Color HotPink(255, 105, 180);
-	std::string hotpink = "" << HotPink << "";
-	Color Chocolate(210, 105, 30);
-	std::string chocolate = "" << Chocolate << "";
-	Color DodgerBlue(30, 144, 255);
-	std::string dodgerblue = "" << DodgerBlue << "";
-	Color LimeGreen(50, 205, 50);
-	std::string limegreen = "" << LimeGreen << "";
-	Color SpringGreen(0 ,250 ,154);
-	std::string springgreen = "" << SpringGreen << "";
-	Color SpecialRed(225 ,0 ,52);
-	std::string specialred = "" << SpecialRed << "";
-	
 	Color SaveCodes(0xFF0033FF);
 	Color MovementCodes(0xFF0033FF);
 	Color PlayerCodes(0xFF0033FF);
@@ -98,40 +67,38 @@ namespace CTRPluginFramework
 	}
 	
 	int	main(void) {
-			PluginMenu *menu = new PluginMenu("ACHHD Vapecord Public Plugin", 1, 0, 0, "Creator: Lukas#4444. \nSpecial thanks: Fussels  \nDiscord: https://discord.gg/w9nvqjW");
-			menu->SynchronizeWithFrame(true);
-			MenuFolder *A = nullptr, *B = nullptr, *C = nullptr, *D = nullptr, *E = nullptr;
+		PluginMenu *menu = new PluginMenu("ACHHD Vapecord Public Plugin", 1, 0, 0, "Creator: Lukas#4444. \nSpecial thanks: Fussels  \nDiscord: https://discord.gg/w9nvqjW");
+		menu->SynchronizeWithFrame(true);
+		MenuFolder *A = nullptr, *B = nullptr, *C = nullptr, *D = nullptr, *E = nullptr;
 
-			A = new MenuFolder(Color(SaveCodes) << "Save Codes");
-			//A->Append(new MenuEntry(Color(PlayerCodes) << "Save Dumper" , nullptr, savedump, "Test.")),
-			//A->Append(new MenuEntry(Color(PlayerCodes) << "Save Restore" , nullptr, saverestore, "Test.")),
-			menu->Append(A);
-			
-			B = new MenuFolder(Color(MovementCodes) << "Movement Codes");
-			B->Append(EntryWithHotkey(new MenuEntry(Color(MovementCodes) << "Walk Through Walls" , collisions, "Test"), Hotkey(Key::L | Key::DPadUp, Color(MovementCodes) << "Walk Over"))),
-			B->Append(EntryWithHotkey(new MenuEntry(Color(MovementCodes) << "Room Warping" , roomwarp, "Test"), Hotkey(Key::R | Key::X, Color(MovementCodes) << "Room Warping"))),
-			B->Append(EntryWithHotkey(new MenuEntry(Color(MovementCodes) << "Coordinate Modifier", coordmod, coordspeed, "Lets you move around your player."),{ Hotkey(Key::A, "Initial Button "), Hotkey(Key::DPadLeft, "Move Left "), Hotkey(Key::DPadRight, "Move Right "), Hotkey(Key::DPadUp, "Move Up "), Hotkey(Key::DPadDown, "Move Down ") })),
-			menu->Append(B);
+		A = new MenuFolder(Color(SaveCodes) << "Save Codes");
+		//A->Append(new MenuEntry(Color(PlayerCodes) << "Save Dumper" , nullptr, savedump, "Test.")),
+		//A->Append(new MenuEntry(Color(PlayerCodes) << "Save Restore" , nullptr, saverestore, "Test.")),
+		menu->Append(A);
+		
+		B = new MenuFolder(Color(MovementCodes) << "Movement Codes");
+		B->Append(EntryWithHotkey(new MenuEntry(Color(MovementCodes) << "Walk Through Walls" , collisions, "Test"), Hotkey(Key::L | Key::DPadUp, Color(MovementCodes) << "Walk Over"))),
+		B->Append(EntryWithHotkey(new MenuEntry(Color(MovementCodes) << "Room Warping" , roomwarp, "Test"), Hotkey(Key::R | Key::X, Color(MovementCodes) << "Room Warping"))),
+		B->Append(EntryWithHotkey(new MenuEntry(Color(MovementCodes) << "Coordinate Modifier", coordmod, coordspeed, "Lets you move around your player."),{ Hotkey(Key::A, "Initial Button "), Hotkey(Key::DPadLeft, "Move Left "), Hotkey(Key::DPadRight, "Move Right "), Hotkey(Key::DPadUp, "Move Up "), Hotkey(Key::DPadDown, "Move Down ") })),
+		menu->Append(B);
 
-			C = new MenuFolder(Color(PlayerCodes) << "Player Codes");
-			C->Append(new MenuEntry(Color(PlayerCodes) << "Player Changer" , nullptr, playerchange, "Test.")),
-			menu->Append(C);
-	
-			D = new MenuFolder(Color(AnimationCodes) << "Animation Codes");
-			D->Append(EntryWithHotkey(new MenuEntry(Color(SaveCodes) << "Set Animation", setanim, "Test."),{ Hotkey(Key::A | Key::DPadRight, "Set Mode"), Hotkey(Key::A | Key::DPadLeft, "Input ID"), Hotkey(Key::A | Key::B, "Execute Mode") })),
-			D->Append(EntryWithHotkey(new MenuEntry(Color(AnimationCodes) << "Idle", idle, "Press the buttons to reset your animation."),{ Hotkey(Key::R, "Idle") })),
-			menu->Append(D);
-			
-			E = new MenuFolder(Color(MiscCodes) << "Misc Codes");
-			E->Append(new MenuEntry(Color(MiscCodes) << "Debug OSD", debug, "Test.")),
-			E->Append(EntryWithHotkey(new MenuEntry(Color(MiscCodes) << "Execute Functions" , miscFunctions, "Test"), Hotkey(Key::Y | Key::DPadDown, Color(MiscCodes) << "Quick Menu"))),
-			E->Append(new MenuEntry(Color(MiscCodes) << "Fast Game Speed", fastgamespeed, "Test.")),
-			menu->Append(E);
-			
-			MessageBox("Plugin made by " << Color::Yellow << "Lukas" << Color::Orange << "#" << Color(LimeGreen) << "4" << Color::Magenta << "4" << Color::Turquoise << "4" << Color::Red << "4" "\n" << Color::White << "Join my Discord for updates and help on the plugin: " << Color::Red << "https://discord.gg/w9nvqjW")();
+		C = new MenuFolder(Color(PlayerCodes) << "Player Codes");
+		C->Append(new MenuEntry(Color(PlayerCodes) << "Player Changer" , nullptr, playerchange, "Test.")),
+		menu->Append(C);
 
-			menu->Run();
+		D = new MenuFolder(Color(AnimationCodes) << "Animation Codes");
+		D->Append(EntryWithHotkey(new MenuEntry(Color(SaveCodes) << "Set Animation", setanim, "Test."),{ Hotkey(Key::A | Key::DPadRight, "Set Mode"), Hotkey(Key::A | Key::DPadLeft, "Input ID"), Hotkey(Key::A | Key::B, "Execute Mode") })),
+		D->Append(EntryWithHotkey(new MenuEntry(Color(AnimationCodes) << "Idle", idle, "Press the buttons to reset your animation."),{ Hotkey(Key::R, "Idle") })),
+		menu->Append(D);
+		
+		E = new MenuFolder(Color(MiscCodes) << "Misc Codes");
+		E->Append(new MenuEntry(Color(MiscCodes) << "Debug OSD", debug, "Test.")),
+		E->Append(EntryWithHotkey(new MenuEntry(Color(MiscCodes) << "Execute Functions" , miscFunctions, "Test"), Hotkey(Key::Y | Key::DPadDown, Color(MiscCodes) << "Quick Menu"))),
+		E->Append(new MenuEntry(Color(MiscCodes) << "Fast Game Speed", fastgamespeed, "Test.")),
+		menu->Append(E);
 
-			return 0;
+		menu->Run();
+
+		return 0;
 	}
 }

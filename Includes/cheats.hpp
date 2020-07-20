@@ -7,6 +7,7 @@
 #include "CTRPluginFramework/System/Rect.hpp"
 #include "MenuEntryhelpers.hpp"
 #include "ctrulib/util/utf.h"
+#include "strings.hpp"
 #include <cmath>
 #include <algorithm>
 

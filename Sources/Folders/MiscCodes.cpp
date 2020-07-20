@@ -7,6 +7,7 @@ namespace CTRPluginFramework
 		if(screen.IsTop) {
 			screen.Draw("Room: " << Hex(*(u8 *)0x738CE9), 0, 0);
 			screen.Draw("Animation: " << Hex(Animation::GetCurrentAnim()), 0, 10);
+			screen.Draw("Snake: " << Hex(Animation::GetCurrentSnake()), 0, 20);
 		}
 		return 1;
 	} 
