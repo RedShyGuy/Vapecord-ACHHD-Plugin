@@ -4,7 +4,7 @@
 namespace CTRPluginFramework
 { //336729B0, 769DC4
 
-4d9da0(33672DB0, snake, 1)
+//33672DFC Tan
 
 //Get Current Animation	
 	u8 Animation::GetCurrentAnim() {
@@ -23,6 +23,15 @@ namespace CTRPluginFramework
 			return 0;
 		
 		return(*(u8 *)(player + 0x4CA));
+	}
+//Get Current Emotion
+	u8 Animation::GetCurrentEmotion() {
+		u32 player = GameHelper::GetPInstance();
+		//If player is not loaded return
+		if(player == 0)
+			return 0;
+		
+		return(*(u8 *)(player + 0xBCC));
 	}
 //Get Animation Instance
 	u32 Animation::GetAnimationInstance() {

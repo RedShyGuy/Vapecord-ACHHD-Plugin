@@ -4,10 +4,14 @@ namespace CTRPluginFramework
 {
 	//0496D4C    sub_496CAC+A0   496F5C
 	bool debugOSD(const Screen &screen) {	
-		if(screen.IsTop) {
-			screen.Draw("Room: " << Hex(*(u8 *)0x738CE9), 0, 0);
-			screen.Draw("Animation: " << Hex(Animation::GetCurrentAnim()), 0, 10);
-			screen.Draw("Snake: " << Hex(Animation::GetCurrentSnake()), 0, 20);
+		float X = *GameHelper::GetCoordinates(), Z = *(float *)((u32)GameHelper::GetCoordinates() + 8);
+		u32 i = GameHelper::GetPInstance();
+		if(screen.IsTop && i != 0) {
+			//screen.Draw("Coordinates: " << std::to_string(X).erase(4) << "|" << std::to_string(Z).erase(4), 0, 0);
+			screen.Draw("Room: " << Hex(*(u8 *)0x738CE9), 0, 20);
+			screen.Draw("Animation: " << Hex(Animation::GetCurrentAnim()), 0, 30);
+			screen.Draw("Emotion: " << Hex(Animation::GetCurrentEmotion()), 0, 40);
+			screen.Draw("Snake: " << Hex(Animation::GetCurrentSnake()), 0, 50);
 		}
 		return 1;
 	} 

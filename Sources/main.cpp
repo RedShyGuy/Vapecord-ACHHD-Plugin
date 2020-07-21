@@ -72,29 +72,28 @@ namespace CTRPluginFramework
 		MenuFolder *A = nullptr, *B = nullptr, *C = nullptr, *D = nullptr, *E = nullptr;
 
 		A = new MenuFolder(Color(SaveCodes) << "Save Codes");
-		//A->Append(new MenuEntry(Color(PlayerCodes) << "Save Dumper" , nullptr, savedump, "Test.")),
-		//A->Append(new MenuEntry(Color(PlayerCodes) << "Save Restore" , nullptr, saverestore, "Test.")),
+		A->Append(new MenuEntry(Color(PlayerCodes) << "Save Settings" , nullptr, SaveSettings, "Lets you dump or restore your TAKUMI save")),
 		menu->Append(A);
 		
 		B = new MenuFolder(Color(MovementCodes) << "Movement Codes");
-		B->Append(EntryWithHotkey(new MenuEntry(Color(MovementCodes) << "Walk Through Walls" , collisions, "Test"), Hotkey(Key::L | Key::DPadUp, Color(MovementCodes) << "Walk Over"))),
-		B->Append(EntryWithHotkey(new MenuEntry(Color(MovementCodes) << "Room Warping" , roomwarp, "Test"), Hotkey(Key::R | Key::X, Color(MovementCodes) << "Room Warping"))),
+		B->Append(EntryWithHotkey(new MenuEntry(Color(MovementCodes) << "Walk Through Walls" , collisions, "Lets you walk over things"), Hotkey(Key::L | Key::DPadUp, Color(MovementCodes) << "Walk Over"))),
+		B->Append(EntryWithHotkey(new MenuEntry(Color(MovementCodes) << "Room Warping" , roomwarp, "Lets you warp to other rooms"), Hotkey(Key::R | Key::X, Color(MovementCodes) << "Room Warping"))),
 		B->Append(EntryWithHotkey(new MenuEntry(Color(MovementCodes) << "Coordinate Modifier", coordmod, coordspeed, "Lets you move around your player."),{ Hotkey(Key::A, "Initial Button "), Hotkey(Key::DPadLeft, "Move Left "), Hotkey(Key::DPadRight, "Move Right "), Hotkey(Key::DPadUp, "Move Up "), Hotkey(Key::DPadDown, "Move Down ") })),
 		menu->Append(B);
 
 		C = new MenuFolder(Color(PlayerCodes) << "Player Codes");
-		C->Append(new MenuEntry(Color(PlayerCodes) << "Player Changer" , nullptr, playerchange, "Test.")),
+		C->Append(new MenuEntry(Color(PlayerCodes) << "Player Changer" , nullptr, playerchange, "Lets you change your players appearance.")),
 		menu->Append(C);
 
 		D = new MenuFolder(Color(AnimationCodes) << "Animation Codes");
-		D->Append(EntryWithHotkey(new MenuEntry(Color(SaveCodes) << "Set Animation", setanim, "Test."),{ Hotkey(Key::A | Key::DPadRight, "Set Mode"), Hotkey(Key::A | Key::DPadLeft, "Input ID"), Hotkey(Key::A | Key::B, "Execute Mode") })),
-		D->Append(EntryWithHotkey(new MenuEntry(Color(AnimationCodes) << "Idle", idle, "Press the buttons to reset your animation."),{ Hotkey(Key::R, "Idle") })),
+		D->Append(EntryWithHotkey(new MenuEntry(Color(SaveCodes) << "Set Animation", setanim, "Lets you set different types of animation."),{ Hotkey(Key::A | Key::DPadRight, "Set Mode"), Hotkey(Key::A | Key::DPadLeft, "Input ID"), Hotkey(Key::A | Key::B, "Execute Mode") })),
+		D->Append(EntryWithHotkey(new MenuEntry(Color(AnimationCodes) << "Idle", idle, "Lets you reset your animation."),{ Hotkey(Key::R, "Idle") })),
 		menu->Append(D);
 		
 		E = new MenuFolder(Color(MiscCodes) << "Misc Codes");
-		E->Append(new MenuEntry(Color(MiscCodes) << "Debug OSD", debug, "Test.")),
+		E->Append(new MenuEntry(Color(MiscCodes) << "Debug OSD", debug, "Shows you usefull informations.")),
 		E->Append(EntryWithHotkey(new MenuEntry(Color(MiscCodes) << "Execute Functions" , miscFunctions, "Test"), Hotkey(Key::Y | Key::DPadDown, Color(MiscCodes) << "Quick Menu"))),
-		E->Append(new MenuEntry(Color(MiscCodes) << "Fast Game Speed", fastgamespeed, "Test.")),
+		E->Append(new MenuEntry(Color(MiscCodes) << "Fast Game Speed", fastgamespeed, "Speeds up your game.")),
 		menu->Append(E);
 
 		menu->Run();

@@ -50,8 +50,7 @@ namespace CTRPluginFramework
 	extern vu32(*pfunction011)(u32 param1, u32 param2, u32 param3, u32 param4, u32 param5, u32 param6, u32 param7, u32 param8, u32 param9, u32 param10, u32 param11);
 	
 	//SaveCodes
-	//void savedump(MenuEntry *entry);
-	//void saverestore(MenuEntry *entry);
+	void SaveSettings(MenuEntry *entry);
 	
 	//MovementCodes
 	void collisions(MenuEntry *entry);

@@ -20,6 +20,8 @@ namespace CTRPluginFramework
 		u32 i = GameHelper::GetPInstance();
 		if(i != 0) 
 			i += 0x50;
+		else 
+			return 0;
 		
 		return(float *)i;
 	}
