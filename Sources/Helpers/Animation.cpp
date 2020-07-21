@@ -91,17 +91,15 @@ namespace CTRPluginFramework
 			Process::Write16(animInstance + 0x1E, (item >> 0x10) & 0xFFFF);
 			Process::Write8(animInstance + 0x20, 0x01);
 		}
-		//maybe snake???
-		else if(animID == 0x0B) {
+		//Snake :D
+		else if(animID == 0x5A) {
 			//Writes Snake to animation
 			Process::Write16(animInstance + 0x1C, snake & 0xFFF);
-			//Writes Sound to animation
-			Process::Write16(animInstance + 0x1E, sound & 0xFFFF);
+			Process::Write16(animInstance + 0x1E, snake & 0xFFFF);
 			
-			Process::Write8(animInstance + 0x22, 1);
-			Process::Write16(animInstance + 0x24, 0xFFFE);
-			Process::Write8(animInstance + 0x26, 4);
-			Process::Write8(animInstance + 0x27, *(u8 *)(player + 0x2F));
+			Process::Write8(animInstance + 0x20, *(u8 *)(player + 0x6B));
+			Process::Write8(animInstance + 0x21, 1);
+			Process::Write8(animInstance + 0x22, 5);
 		}
 		//any other animation
 		else {
