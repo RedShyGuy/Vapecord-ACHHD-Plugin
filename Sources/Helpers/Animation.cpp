@@ -2,7 +2,10 @@
 #include "Helpers/Animation.hpp"
 
 namespace CTRPluginFramework
-{
+{ //336729B0, 769DC4
+
+4d9da0(33672DB0, snake, 1)
+
 //Get Current Animation	
 	u8 Animation::GetCurrentAnim() {
 		u32 player = GameHelper::GetPInstance();
@@ -12,14 +15,14 @@ namespace CTRPluginFramework
 		
 		return(*(u8 *)(player + 0x710));
 	}
-//Get Current Snake Animation
+//Get Current Snake	
 	u16 Animation::GetCurrentSnake() {
 		u32 player = GameHelper::GetPInstance();
 		//If player is not loaded return
 		if(player == 0)
 			return 0;
 		
-		return(*(u8 *)(player + 0x728));
+		return(*(u8 *)(player + 0x4CA));
 	}
 //Get Animation Instance
 	u32 Animation::GetAnimationInstance() {
@@ -45,7 +48,7 @@ namespace CTRPluginFramework
 		return pfunction04(player, animID, animInstance, 0);
 	}
 //Animation Wrapper
-	bool Animation::AnimationWrapper(u8 animID, u8 emotion, u32 item) {
+	bool Animation::AnimationWrapper(u8 animID, u8 emotion, u16 item, u16 snake, u16 sound) {
 		//Get player data
 		u32 player = GameHelper::GetPInstance();
 		//If player is not loaded return
@@ -78,6 +81,22 @@ namespace CTRPluginFramework
 			Process::Write16(animInstance + 0x1C, item & 0xFFFF);
 			Process::Write16(animInstance + 0x1E, (item >> 0x10) & 0xFFFF);
 			Process::Write8(animInstance + 0x20, 0x01);
+		}
+		//maybe snake???
+		else if(animID == 0x0B) {
+			//Writes Snake to animation
+			Process::Write16(animInstance + 0x1C, snake & 0xFFF);
+			//Writes Sound to animation
+			Process::Write16(animInstance + 0x1E, sound & 0xFFFF);
+			
+			Process::Write8(animInstance + 0x22, 1);
+			Process::Write16(animInstance + 0x24, 0xFFFE);
+			Process::Write8(animInstance + 0x26, 4);
+			Process::Write8(animInstance + 0x27, *(u8 *)(player + 0x2F));
+		}
+		//any other animation
+		else {
+			Process::Write8(animInstance + 0x1E, item);
 		}
 		
 		//Execute standard Animation

@@ -12,7 +12,7 @@ namespace CTRPluginFramework
 		static u16		GetCurrentSnake();
 		static u32		GetAnimationInstance();
 		static u32		ExecuteAnimation(u8 animID, u32 animInstance);
-		static bool 	AnimationWrapper(u8 animID, u8 emotion, u32 item);
+		static bool 	AnimationWrapper(u8 animID, u8 emotion, u16 item, u16 snake, u16 sound);
 	};
 }
 #endif
