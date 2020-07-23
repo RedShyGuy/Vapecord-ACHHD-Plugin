@@ -5,7 +5,7 @@ namespace CTRPluginFramework
 { //336729B0, 769DC4
 
 //33672DFC Tan
-
+//4362E09B
 //Get Current Animation	
 	u8 Animation::GetCurrentAnim() {
 		u32 player = GameHelper::GetPInstance();
@@ -103,7 +103,13 @@ namespace CTRPluginFramework
 		}
 		//any other animation
 		else {
-			Process::Write8(animInstance + 0x1E, item);
+			//Writes Sound to animation
+			Process::Write16(animInstance + 0x1C, sound & 0xFFFF);
+			
+			Process::Write16(animInstance + 0x1E, sound & 0xFFFF);
+			
+			Process::Write8(animInstance + 0x1F, 1);
+			//Process::Write8(animInstance + 0x1E, item);
 		}
 		
 		//Execute standard Animation

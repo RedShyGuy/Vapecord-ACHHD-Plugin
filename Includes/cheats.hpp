@@ -64,6 +64,7 @@ namespace CTRPluginFramework
 	
 	//MiscCodes
 	void debug(MenuEntry *entry);
+	void cameramove(MenuEntry *entry);
 	void miscFunctions(MenuEntry *entry);
 	void fastgamespeed(MenuEntry *entry);
 	

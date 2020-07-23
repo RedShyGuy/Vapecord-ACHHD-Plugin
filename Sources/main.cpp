@@ -67,7 +67,7 @@ namespace CTRPluginFramework
 	}
 	
 	int	main(void) {
-		PluginMenu *menu = new PluginMenu("ACHHD Vapecord Public Plugin", 1, 0, 0, "Creator: Lukas#4444. \nSpecial thanks: Fussels  \nDiscord: https://discord.gg/w9nvqjW");
+		PluginMenu *menu = new PluginMenu("ACHHD Vapecord Public Plugin", 1, 0, 0, "Creator: Lukas#4444.\nThanks to Kominost for the Walk Over Things! \nSpecial thanks: Fussels  \nDiscord: https://discord.gg/w9nvqjW");
 		menu->SynchronizeWithFrame(true);
 		MenuFolder *A = nullptr, *B = nullptr, *C = nullptr, *D = nullptr, *E = nullptr;
 
@@ -92,6 +92,7 @@ namespace CTRPluginFramework
 		
 		E = new MenuFolder(Color(MiscCodes) << "Misc Codes");
 		E->Append(new MenuEntry(Color(MiscCodes) << "Debug OSD", debug, "Shows you usefull informations.")),
+		E->Append(EntryWithHotkey(new MenuEntry(Color(MiscCodes) << "Camera Mod", cameramove, "Lets you move around your camera."), { Hotkey(Key::R | Key::DPadRight, ""), Hotkey(Key::R | Key::DPadLeft, ""), Hotkey(Key::R | Key::DPadDown, ""), Hotkey(Key::R | Key::DPadUp, ""), Hotkey(Key::R | Key::X, ""), Hotkey(Key::R | Key::B, ""), Hotkey(Key::R | Key::A, ""), Hotkey(Key::R | Key::Y, ""), })),
 		E->Append(EntryWithHotkey(new MenuEntry(Color(MiscCodes) << "Execute Functions" , miscFunctions, "Test"), Hotkey(Key::Y | Key::DPadDown, Color(MiscCodes) << "Quick Menu"))),
 		E->Append(new MenuEntry(Color(MiscCodes) << "Fast Game Speed", fastgamespeed, "Speeds up your game.")),
 		menu->Append(E);

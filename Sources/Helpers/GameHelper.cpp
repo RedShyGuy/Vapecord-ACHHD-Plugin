@@ -42,6 +42,7 @@ namespace CTRPluginFramework
 		Process::Write32((u32)&pfunction02, 0x49DA08);
 		return pfunction02(0, 1);
 	}
+	
 //Get Coordinates Function
 	//int FUN_0049de88(undefined4 *puParm1)
 	//int FUN_0049bf24(undefined4 *puParm1)

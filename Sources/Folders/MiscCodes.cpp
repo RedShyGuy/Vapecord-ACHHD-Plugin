@@ -2,7 +2,6 @@
 
 namespace CTRPluginFramework
 {
-	//0496D4C    sub_496CAC+A0   496F5C
 	bool debugOSD(const Screen &screen) {	
 		float X = *GameHelper::GetCoordinates(), Z = *(float *)((u32)GameHelper::GetCoordinates() + 8);
 		u32 i = GameHelper::GetPInstance();
@@ -22,6 +21,7 @@ namespace CTRPluginFramework
 		else if(!entry->IsActivated()) 
 			OSD::Stop(debugOSD);
 	}
+
 	//Made by Nico
 	void miscFunctions(MenuEntry *entry) {	
 		if(entry->Hotkeys[0].IsDown()) {
