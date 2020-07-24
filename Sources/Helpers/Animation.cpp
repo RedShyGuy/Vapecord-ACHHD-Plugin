@@ -72,7 +72,7 @@ namespace CTRPluginFramework
 
 		//Get Coordinates for animation	
 		Process::Write32((u32)&pfunction02, 0x4A2488);
-		pfunction02(animInstance + 0x8, (u32)GameHelper::GetCoordinates()); 
+		pfunction02(animInstance + 0x8, (u32)Coordinates::GetCoordinates()); 
 		
 		//emotion change
 		if(animID == 0x56) {

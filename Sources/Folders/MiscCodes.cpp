@@ -3,7 +3,7 @@
 namespace CTRPluginFramework
 {
 	bool debugOSD(const Screen &screen) {	
-		float X = *GameHelper::GetCoordinates(), Z = *(float *)((u32)GameHelper::GetCoordinates() + 8);
+		float X = *Coordinates::GetCoordinates(), Z = *(float *)((u32)Coordinates::GetCoordinates() + 8);
 		u32 i = GameHelper::GetPInstance();
 		if(screen.IsTop && i != 0) {
 			//screen.Draw("Coordinates: " << std::to_string(X).erase(4) << "|" << std::to_string(Z).erase(4), 0, 0);
