@@ -12,6 +12,7 @@ namespace CTRPluginFramework
 		static u32		RoomChange(u8 room);
 		static bool 	Outside();
 		static float 	*GetCoordinates();
+		static u32		GetWorldCoords();
 	};
 	
 	class Region

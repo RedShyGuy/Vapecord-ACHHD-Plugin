@@ -25,6 +25,16 @@ namespace CTRPluginFramework
 		
 		return(float *)i;
 	}
+//get world coords
+	u32 GameHelper::GetWorldCoords() {
+		u32 i = GameHelper::GetPInstance();
+		if(i != 0) 
+			i += 0x59C;
+		else 
+			return 0;
+		
+		return i;
+	}
 //If outside
 	bool GameHelper::Outside() {
 		if(*(u32 *)0x33672A00 != 0) 

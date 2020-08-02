@@ -92,7 +92,6 @@ namespace CTRPluginFramework
 		
 		E = new MenuFolder(Color(MiscCodes) << "Misc Codes");
 		E->Append(new MenuEntry(Color(MiscCodes) << "Debug OSD", debug, "Shows you usefull informations.")),
-		E->Append(EntryWithHotkey(new MenuEntry(Color(MiscCodes) << "Camera Mod", cameramove, "Lets you move around your camera."), { Hotkey(Key::R | Key::DPadRight, ""), Hotkey(Key::R | Key::DPadLeft, ""), Hotkey(Key::R | Key::DPadDown, ""), Hotkey(Key::R | Key::DPadUp, ""), Hotkey(Key::R | Key::X, ""), Hotkey(Key::R | Key::B, ""), Hotkey(Key::R | Key::A, ""), Hotkey(Key::R | Key::Y, ""), })),
 		E->Append(EntryWithHotkey(new MenuEntry(Color(MiscCodes) << "Execute Functions" , miscFunctions, "Test"), Hotkey(Key::Y | Key::DPadDown, Color(MiscCodes) << "Quick Menu"))),
 		E->Append(new MenuEntry(Color(MiscCodes) << "Fast Game Speed", fastgamespeed, "Speeds up your game.")),
 		menu->Append(E);
