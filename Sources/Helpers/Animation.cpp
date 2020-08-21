@@ -12,7 +12,7 @@ namespace CTRPluginFramework
 			Process::Write32((u32)&pfunction03, 0x527E5C);
 			pfunction03(npc, 0, emotion);
 		}
-		if(animID == 0xE) {
+		else if(animID == 0xE) {
 			Process::Write32((u32)&pfunction05, 0x528FA0);
 			pfunction05(npc, 0, snake, 0, 0);
 		}
