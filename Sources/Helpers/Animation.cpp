@@ -6,6 +6,22 @@ namespace CTRPluginFramework
 
 //33672DFC Tan
 //4362E09B
+//NPC Animation
+	void Animation::SetNPCAnimation(u32 npc, u8 animID, u8 emotion, u16 snake) {
+		if(animID == 0xC) {
+			Process::Write32((u32)&pfunction03, 0x527E5C);
+			pfunction03(npc, 0, emotion);
+		}
+		if(animID == 0xE) {
+			Process::Write32((u32)&pfunction05, 0x528FA0);
+			pfunction05(npc, 0, snake, 0, 0);
+		}
+		else {
+			u32 null[]{ 0 };
+			Process::Write32((u32)&pfunction08, 0x525A24);
+			pfunction08(npc, animID, 0, 0x85A534, (u32)null, (u32)null, 0, 0x66873C);
+		}	
+	}
 //Get Current Animation	
 	u8 Animation::GetCurrentAnim() {
 		u32 player = GameHelper::GetPInstance();
@@ -31,7 +47,7 @@ namespace CTRPluginFramework
 		if(player == 0)
 			return 0;
 		
-		return(*(u8 *)(player + 0xBCC));
+		return(*(u8 *)(player + 0x628));
 	}
 //Get Animation Instance
 	u32 Animation::GetAnimationInstance() {
@@ -81,7 +97,7 @@ namespace CTRPluginFramework
 		}
 		//outfit change
 		else if(animID == 0x42) {
-			Process::Write8(animInstance + 0x1C, item);
+			Process::Write32(animInstance + 0x1C, item);
 			Process::Write8(animInstance + 0x20, emotion);
 			Process::Write32(animInstance + 0x44, 0x02880000);
 		}

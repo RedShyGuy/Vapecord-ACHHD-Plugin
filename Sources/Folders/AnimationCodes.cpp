@@ -32,14 +32,14 @@ namespace CTRPluginFramework
 				break;
 				case 3:
 					OSD::Notify("Snake Mode", Color::Yellow);
-					mode++;
+					mode = mode - 3;
 					setmode = 4;
 				break;
-				case 4:
+				/*case 4:
 					OSD::Notify("Sound Mode", Color::Lime);
 					mode = mode - 4;
 					setmode = 5;
-				break;
+				break;*/
 			}
 		}
 		
@@ -58,20 +58,97 @@ namespace CTRPluginFramework
 				case 4: {
 					SetUpKB("Enter Snake ID:", true, 2, SnakeID, SnakeID);
 				} break;
-				case 5: {
+				/*case 5: {
 					SetUpKB("Enter Sound ID:", true, 2, SoundID, SoundID);
-				} break;
+				} break;*/
 			}
 		}
 		
 		if(Controller::IsKeysPressed(entry->Hotkeys[2].GetKeys())) {
-			Animation::AnimationWrapper(AnimID, EmoteID, ItemID, SnakeID, SoundID);
+			switch(setmode) {
+				case 0: return;
+				case 1: {
+					Animation::AnimationWrapper(AnimID, EmoteID, ItemID, SnakeID, SoundID);
+				} break;
+				case 2: {
+					Animation::AnimationWrapper(0x56, EmoteID, 0, 0, 0);
+				} break;
+				case 3: {
+					Animation::AnimationWrapper(0x43, 0, ItemID, 0, 0);
+				} break;
+				case 4: {
+					Animation::AnimationWrapper(0x5A, 0, 0, SnakeID, 0);
+				} break;
+				/*case 5: {
+					Animation::AnimationWrapper(AnimID, EmoteID, ItemID, SnakeID, SoundID);
+				} break;*/
+			}
 		}
 	}
 	
 	void idle(MenuEntry *entry) {
 		if(entry->Hotkeys[0].IsDown()) {
 			Animation::AnimationWrapper(3, 0, 0, 0, 0);
+		}
+	}
+	
+	void NPCCode(MenuEntry *entry) {
+		static u8 animID = 0;
+		static u8 emotionID = 0;
+		static u16 snakeID = 0;
+		static u32 NPCOffset = 0;
+		static int mode = 0;
+		
+		std::vector<std::string> npcOpt{
+			"Set Animation",
+			"Set Snake",
+			"Set Emotion",
+		};
+		
+		u32 i = GameHelper::GetPInstance();
+		if(Controller::IsKeysPressed(Key::B + Key::DPadRight)) {
+			switch(mode) {
+				default: break;
+				case 0:
+					OSD::Notify("Lyle", Color::Blue);
+					mode++;
+					NPCOffset = i + 0x1C5AC;
+				break;
+				case 1:
+					OSD::Notify("Isabelle", Color::Yellow);
+					mode++;
+					NPCOffset = i + 0x11C04;
+				break;
+				case 2:
+					OSD::Notify("Lottie", Color::Magenta);
+					mode = mode - 2;
+					NPCOffset = i + 0x134A4;
+				break;
+			}
+		}
+		
+		if(Controller::IsKeysPressed(Key::B + Key::DPadLeft)) {
+			Keyboard npcmenu("");
+			npcmenu.Populate(npcOpt);
+			switch(npcmenu.Open()) {
+				default: break;
+				case 0: {
+					SetUpKB("Enter Animation ID:", true, 2, animID, animID);
+				} break;
+				case 1: {
+					SetUpKB("Enter Emotion ID:", true, 2, emotionID, emotionID);
+				} break;
+				case 2: {
+					SetUpKB("Enter Snake ID:", true, 2, snakeID, snakeID);
+				} break;
+			}
+		}
+		
+		if(Controller::IsKeyPressed(Key::R)) {
+			if(NPCOffset == 0)
+				return;
+			
+			Animation::SetNPCAnimation(NPCOffset, animID, emotionID, snakeID);
 		}
 	}
 }

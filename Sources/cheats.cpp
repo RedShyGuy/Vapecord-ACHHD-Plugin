@@ -15,15 +15,6 @@ namespace CTRPluginFramework
 	vu32(*pfunction010)(u32 param1, u32 param2, u32 param3, u32 param4, u32 param5, u32 param6, u32 param7, u32 param8, u32 param9, u32 param10);
 	vu32(*pfunction011)(u32 param1, u32 param2, u32 param3, u32 param4, u32 param5, u32 param6, u32 param7, u32 param8, u32 param9, u32 param10, u32 param11);
 
-	void playerchange(MenuEntry *entry) {
-		/*0x33672DC8 = Hat
-		0x33672DCC = Accessoire
-		0x33672DD0 = Shirt
-		0x33672DD4 = Trousers
-		0x33672DD8 = Socks
-		0x33672DDC = Shoes*/
-	}
-
 	/*void emotionmenu(MenuEntry *entry) { 
 		Process::Write32(0x326A8CBC, 0x01020304);
 		Process::Write32(0x326A8CC0, 0x05060708);

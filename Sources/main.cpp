@@ -38,13 +38,8 @@ namespace CTRPluginFramework
 	void PatchProcess(FwkSettings &settings) {
 		//OPTIONS
 		settings.ThreadPriority = 0x30;
-		//settings.AllowSearchEngine = false;
-		//settings.AllowActionReplay = false;
-	    //settings.WaitTimeToBoot = Time(Seconds(30));
-		//settings.MainTextColor = Color::DeepSkyBlue;
 		settings.BackgroundMainColor = Color::Black;
 		settings.BackgroundSecondaryColor = Color::Black;
-		//settings.BackgroundBorderColor = Color::Blue; 
 		settings.WindowTitleColor = Color::Yellow;
 		settings.MenuSelectedItemColor = Color::Lime;
 		settings.MenuUnselectedItemColor = Color::White;
@@ -82,12 +77,13 @@ namespace CTRPluginFramework
 		menu->Append(B);
 
 		C = new MenuFolder(Color(PlayerCodes) << "Player Codes");
-		C->Append(new MenuEntry(Color(PlayerCodes) << "Player Changer" , nullptr, playerchange, "Lets you change your players appearance.")),
+		C->Append(EntryWithHotkey(new MenuEntry(Color(PlayerCodes) << "Outfit Randomizer", playerchange, "Lets you randomize your players outfit."), { Hotkey(Key::L | Key::DPadRight, Color(PlayerCodes) << "Randomize Outfit"), Hotkey(Key::L |Key::DPadLeft, "Set Speed") } )),
 		menu->Append(C);
 
 		D = new MenuFolder(Color(AnimationCodes) << "Animation Codes");
-		D->Append(EntryWithHotkey(new MenuEntry(Color(SaveCodes) << "Set Animation", setanim, "Lets you set different types of animation."),{ Hotkey(Key::A | Key::DPadRight, "Set Mode"), Hotkey(Key::A | Key::DPadLeft, "Input ID"), Hotkey(Key::A | Key::B, "Execute Mode") })),
+		D->Append(EntryWithHotkey(new MenuEntry(Color(AnimationCodes) << "Set Animation", setanim, "Lets you set different types of animation."),{ Hotkey(Key::A | Key::DPadRight, "Set Mode"), Hotkey(Key::A | Key::DPadLeft, "Input ID"), Hotkey(Key::A | Key::B, "Execute Mode") })),
 		D->Append(EntryWithHotkey(new MenuEntry(Color(AnimationCodes) << "Idle", idle, "Lets you reset your animation."),{ Hotkey(Key::R, "Idle") })),
+		D->Append(new MenuEntry(Color(AnimationCodes) << "NPC Code", NPCCode, "")),
 		menu->Append(D);
 		
 		E = new MenuFolder(Color(MiscCodes) << "Misc Codes");

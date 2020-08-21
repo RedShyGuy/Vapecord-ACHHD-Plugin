@@ -8,6 +8,7 @@ namespace CTRPluginFramework
 	class Animation
 	{
 	public:
+		static void		SetNPCAnimation(u32 npc, u8 animID, u8 emotion, u16 snake);
 		static u8 		GetCurrentAnim();
 		static u16		GetCurrentSnake();
 		static u8		GetCurrentEmotion();

@@ -61,6 +61,7 @@ namespace CTRPluginFramework
 	//AnimationCodes
 	void setanim(MenuEntry *entry);
 	void idle(MenuEntry *entry);
+	void NPCCode(MenuEntry *entry);
 	
 	//MiscCodes
 	void debug(MenuEntry *entry);
