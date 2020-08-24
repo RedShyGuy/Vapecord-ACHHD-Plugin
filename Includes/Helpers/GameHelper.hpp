@@ -9,6 +9,8 @@ namespace CTRPluginFramework
 	{
 	public:
 		static u32 		GetPInstance();
+		static u32		GetCurrentMap();
+		static u32 		*GetItemAtWorldCoords(u32 wX, u32 wY);
 		static u32		RoomChange(u8 room);
 		static bool 	Outside();
 		static float 	*GetCoordinates();

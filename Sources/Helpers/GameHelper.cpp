@@ -35,6 +35,16 @@ namespace CTRPluginFramework
 		
 		return i;
 	}
+//Get current map	
+	u32 GameHelper::GetCurrentMap() {
+		Process::Write32((u32)&pfunction00, 0x50B1F8);
+		return pfunction00();
+	}
+//get item at world coords
+	u32 *GameHelper::GetItemAtWorldCoords(u32 wX, u32 wY) {
+		Process::Write32((u32)&pfunction04, 0x57C890);
+		return (u32 *)pfunction04(GameHelper::GetCurrentMap(), wX, wY, 0);
+	}
 //If outside
 	bool GameHelper::Outside() {
 		if(*(u32 *)0x33672A00 != 0) 
