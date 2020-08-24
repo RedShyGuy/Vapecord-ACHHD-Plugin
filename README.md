@@ -6,7 +6,7 @@ It gets updated fairly often (depends when I like to work on it lol) and I alway
 
 ## Plugin
 The Vapecord-ACHHD-Plugin is an Animal Crossing Happy Home Designer Plugin as the name already tells, it works only for the USA Version right now but will work for others soon!
-You can even use it for the Rom Hack [Welcome Luxury](https://gitlab.com/Kyusetzu/ACWL)!! 
+
 #### Plugin Features
 The Plugin can do various things like Room Warp, Animation Modifier, Coordinates Mod, Walk Over Things and more!!
 
