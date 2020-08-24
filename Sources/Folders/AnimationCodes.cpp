@@ -59,7 +59,7 @@ namespace CTRPluginFramework
 			switch(setmode) {
 				case 0: return;
 				case 1: {
-					Animation::AnimationWrapper(AnimID > 0x64 ? 3 : AnimID, EmoteID, ItemID, SnakeID, SoundID);
+					Animation::AnimationWrapper(AnimID > 0x64 ? 3 : AnimID, EmoteID, ItemID, SnakeID, 0);
 				} break;
 				case 2: {
 					Animation::AnimationWrapper(0x56, EmoteID, 0, 0, 0);
