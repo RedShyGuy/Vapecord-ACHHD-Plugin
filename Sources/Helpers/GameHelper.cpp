@@ -52,4 +52,4 @@ namespace CTRPluginFramework
 		Process::Write32((u32)&pfunction02, 0x49DA08);
 		return pfunction02(0, 1);
 	}
-}
+}//

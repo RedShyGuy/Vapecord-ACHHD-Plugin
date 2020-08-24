@@ -54,4 +54,4 @@ namespace CTRPluginFramework
 		kb.OnInputChange(cb);
 		return kb.Open(output, def) == 0;
 	}
-}
+}//

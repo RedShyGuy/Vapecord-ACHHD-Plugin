@@ -139,4 +139,4 @@ namespace CTRPluginFramework
 			Animation::SetNPCAnimation(NPCOffset, animID, emotionID, snakeID);
 		}
 	}*/
-}
+}//

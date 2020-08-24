@@ -20,5 +20,5 @@ namespace CTRPluginFramework
 	public:
 		static int AutoRegion(u32 usa, u32 eur, u32 jpn);
 	};
-}
+}//
 #endif

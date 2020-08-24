@@ -138,4 +138,4 @@ namespace CTRPluginFramework
 		Sleep(Milliseconds(25));
 		return 1;
 	}
-}
+}//

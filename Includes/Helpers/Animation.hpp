@@ -16,5 +16,5 @@ namespace CTRPluginFramework
 		static u32		ExecuteAnimation(u8 animID, u32 animInstance);
 		static bool 	AnimationWrapper(u8 animID, u8 emotion, u16 item, u16 snake, u16 sound);
 	};
-}
+}//
 #endif
