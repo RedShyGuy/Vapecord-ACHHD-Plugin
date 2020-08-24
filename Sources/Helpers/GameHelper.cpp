@@ -1,6 +1,8 @@
 #include "cheats.hpp"
 #include "Helpers/GameHelper.hpp"
 
+//0x739814 is 7FFE Pointer
+
 namespace CTRPluginFramework
 {
 	const u64 USA = 0x000400000014F100; 
@@ -18,20 +20,20 @@ namespace CTRPluginFramework
 //Get Coords
 	float *GameHelper::GetCoordinates() {
 		u32 i = GameHelper::GetPInstance();
-		if(i != 0) 
-			i += 0x50;
-		else 
+		if(i == 0) 
 			return 0;
+		
+		i += 0x50;
 		
 		return(float *)i;
 	}
 //get world coords
 	u32 GameHelper::GetWorldCoords() {
 		u32 i = GameHelper::GetPInstance();
-		if(i != 0) 
-			i += 0x59C;
-		else 
+		if(i == 0) 
 			return 0;
+		
+		i += 0x59C;	
 		
 		return i;
 	}
@@ -45,12 +47,33 @@ namespace CTRPluginFramework
 		Process::Write32((u32)&pfunction04, 0x57C890);
 		return (u32 *)pfunction04(GameHelper::GetCurrentMap(), wX, wY, 0);
 	}
+//drop function
+	void GameHelper::DropItem(u32 ItemID, u32 wX, u32 wY) {
+		u32 i = GameHelper::GetPInstance();
+		if(i == 0) 
+			return;
+
+		Process::Write32(0x7ED000, ItemID);
+		Process::Write32((u32)&pfunction04, 0x480BDC);
+		pfunction04(0x7ED000, wX, wY, 0);
+	}
+	
+//Converts world coords to coords
+	float *GameHelper::WorldCoordsToCoords(u8 wX, u8 wY, float res[3]) {
+		volatile float *coords = GameHelper::GetCoordinates();
+		if(coords != nullptr) 
+			res[1] = *(volatile float *)((u32)coords + 4);
+		
+		res[0] = (float)(wX * 0x20 + 0x10);
+		res[2] = (float)(wY * 0x20 + 0x10);
+		return &res[0];
+	}
 //If outside
 	bool GameHelper::Outside() {
 		if(*(u32 *)0x33672A00 != 0) 
 			return false;
-		else 
-			return true;
+
+		return true;
 	}
 //Call Room Change Function	
 	u32 GameHelper::RoomChange(u8 room) {

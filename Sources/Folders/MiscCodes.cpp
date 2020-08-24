@@ -29,6 +29,22 @@ namespace CTRPluginFramework
 		else if(!entry->IsActivated()) 
 			OSD::Stop(debugOSD);
 	}
+	
+	void Dropper(MenuEntry *entry) {
+		u32 i = GameHelper::GetPInstance();
+		if(i == 0) 
+			return;
+		
+		static u32 ItemID = 0x7FFE;
+		if(Controller::IsKeysPressed(entry->Hotkeys[0].GetKeys())) {
+			SetUpKB("Enter Item ID", true, 8, ItemID, ItemID);
+		}
+		
+		if(entry->Hotkeys[1].IsDown()) {
+			u32 wX = GameHelper::GetWorldCoords(), wY = GameHelper::GetWorldCoords() + 4;
+			GameHelper::DropItem(ItemID, *(u32 *)wX, *(u32 *)wY);
+		}
+	}
 
 	//Made by Nico
 	void miscFunctions(MenuEntry *entry) {	

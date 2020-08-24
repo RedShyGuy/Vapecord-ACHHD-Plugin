@@ -14,6 +14,8 @@ namespace CTRPluginFramework
 		static u32		RoomChange(u8 room);
 		static bool 	Outside();
 		static float 	*GetCoordinates();
+		static float 	*WorldCoordsToCoords(u8 wX, u8 wY, float res[3]);
+		static void 	DropItem(u32 ItemID, u32 wX, u32 wY);
 		static u32		GetWorldCoords();
 	};
 	

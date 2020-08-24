@@ -86,13 +86,14 @@ namespace CTRPluginFramework
 		if(animInstance == 0)
 			return 0;
 
-		//Get Coordinates for animation
-		Process::Write32((u32)&pfunction02, 0x4A2488);
-		pfunction02(animInstance + 0x8, (u32)GameHelper::GetCoordinates()); 
-		
 		//Get World Coords
 		u32 wX = GameHelper::GetWorldCoords();
 		u32 wY = GameHelper::GetWorldCoords() + 4;
+
+		float coords[3];
+		//Get Coordinates for animation
+		Process::Write32((u32)&pfunction02, 0x4A2488);
+		pfunction02(animInstance + 0x8, (u32)GameHelper::WorldCoordsToCoords(wX, wY, coords)); 
 
 		//emotion change
 		if(animID == 0x56) {

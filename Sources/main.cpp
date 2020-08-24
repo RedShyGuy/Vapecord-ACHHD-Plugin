@@ -140,8 +140,9 @@ namespace CTRPluginFramework
 		
 		MISCCODES = new MenuFolder(Color(MiscCodes) << "Misc Codes");
 		MISCCODES->Append(new MenuEntry(Color(MiscCodes) << "Debug OSD", debug, "Shows you usefull informations.")),
+		MISCCODES->Append(EntryWithHotkey(new MenuEntry(Color(MiscCodes) << "Instant Drop", Dropper, "Lets you drop items in an instant!"), { Hotkey(Key::L | Key::DPadRight, "Select Item ID"), Hotkey(Key::L | Key::DPadDown, "Drop Item") } )),
 		//Not for the release neccessary
-	    MISCCODES->Append(EntryWithHotkey(new MenuEntry(Color(MiscCodes) << "Execute Functions" , miscFunctions, "Lets you execute functions"), Hotkey(Key::Y | Key::DPadDown, Color(MiscCodes) << "Quick Menu"))),
+	    MISCCODES->Append(EntryWithHotkey(new MenuEntry(Color(MiscCodes) << "Execute Functions" , miscFunctions, "Lets you execute functions"), Hotkey(Key::Y | Key::DPadDown, "Quick Menu"))),
 		MISCCODES->Append(new MenuEntry(Color(MiscCodes) << "Fast Game Speed", fastgamespeed, "Speeds up your game.")),
 		menu->Append(MISCCODES);
 
