@@ -123,8 +123,8 @@ namespace CTRPluginFramework
 		menu->Append(SAVECODES);
 		
 		MOVECODES = new MenuFolder(Color(MovementCodes) << "Movement Codes");
-		MOVECODES->Append(EntryWithHotkey(new MenuEntry(Color(MovementCodes) << "Walk Through Walls" , collisions, "Lets you walk over things"), Hotkey(Key::L | Key::DPadUp, Color(MovementCodes) << "Walk Over"))),
-		MOVECODES->Append(EntryWithHotkey(new MenuEntry(Color(MovementCodes) << "Room Warping" , roomwarp, "Lets you warp to other rooms"), Hotkey(Key::R | Key::X, Color(MovementCodes) << "Room Warping"))),
+		MOVECODES->Append(EntryWithHotkey(new MenuEntry(Color(MovementCodes) << "Walk Through Walls" , collisions, "Lets you walk over things"), Hotkey(Key::L | Key::DPadUp, "Walk Over"))),
+		MOVECODES->Append(EntryWithHotkey(new MenuEntry(Color(MovementCodes) << "Room Warping" , roomwarp, "Lets you warp to other rooms"), Hotkey(Key::R | Key::X, "Room Warping"))),
 		MOVECODES->Append(EntryWithHotkey(new MenuEntry(Color(MovementCodes) << "Coordinate Modifier", coordmod, coordspeed, "Lets you move around your player."),{ Hotkey(Key::A, "Initial Button "), Hotkey(Key::DPadLeft, "Move Left "), Hotkey(Key::DPadRight, "Move Right "), Hotkey(Key::DPadUp, "Move Up "), Hotkey(Key::DPadDown, "Move Down ") })),
 		menu->Append(MOVECODES);
 
