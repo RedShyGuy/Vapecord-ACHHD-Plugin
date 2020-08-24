@@ -2,12 +2,12 @@
 #include "Helpers/Animation.hpp"
 
 namespace CTRPluginFramework
-{ //336729B0, 769DC4
-
-//33672DFC Tan
-//4362E09B
+{ 
+//336729B0, 769DC4
+//33673E28, 
+//3221 to 3277 tools 
 //NPC Animation
-	void Animation::SetNPCAnimation(u32 npc, u8 animID, u8 emotion, u16 snake) {
+	/*void Animation::SetNPCAnimation(u32 npc, u8 animID, u8 emotion, u16 snake) {
 		if(animID == 0xC) {
 			Process::Write32((u32)&pfunction03, 0x527E5C);
 			pfunction03(npc, 0, emotion);
@@ -21,7 +21,7 @@ namespace CTRPluginFramework
 			Process::Write32((u32)&pfunction08, 0x525A24);
 			pfunction08(npc, animID, 0, 0x85A534, (u32)null, (u32)null, 0, 0x66873C);
 		}	
-	}
+	}*/
 //Get Current Animation	
 	u8 Animation::GetCurrentAnim() {
 		u32 player = GameHelper::GetPInstance();
@@ -86,9 +86,13 @@ namespace CTRPluginFramework
 		if(animInstance == 0)
 			return 0;
 
-		//Get Coordinates for animation	
+		//Get Coordinates for animation
 		Process::Write32((u32)&pfunction02, 0x4A2488);
 		pfunction02(animInstance + 0x8, (u32)GameHelper::GetCoordinates()); 
+		
+		//Get World Coords
+		u32 wX = GameHelper::GetWorldCoords();
+		u32 wY = GameHelper::GetWorldCoords() + 4;
 
 		//emotion change
 		if(animID == 0x56) {
@@ -117,15 +121,15 @@ namespace CTRPluginFramework
 			Process::Write8(animInstance + 0x21, 1);
 			Process::Write8(animInstance + 0x22, 5);
 		}
+		else if(animID == 0x44) {
+			//this makes the player coords not change after the animation
+			Process::Write8(animInstance + 0x20, 1);
+			Process::Write8(animInstance + 0x21, 1);
+		}
 		//any other animation
 		else {
-			//Writes Sound to animation
-			Process::Write16(animInstance + 0x1C, sound & 0xFFFF);
-			
-			Process::Write16(animInstance + 0x1E, sound & 0xFFFF);
-			
-			Process::Write8(animInstance + 0x1F, 1);
-			//Process::Write8(animInstance + 0x1E, item);
+			Process::Write16(animInstance + 0x1C, wX);		
+			Process::Write16(animInstance + 0x1D, wY);
 		}
 		
 		//Execute standard Animation

@@ -7,7 +7,6 @@ namespace CTRPluginFramework
 		static u8 EmoteID = 0x01;
 		static u16 ItemID = 0x0001;
 		static u16 SnakeID = 0x0001;
-		static u16 SoundID = 0x0001;
 		
 		static int mode = 0;
 		static int setmode = 0;
@@ -35,11 +34,6 @@ namespace CTRPluginFramework
 					mode = mode - 3;
 					setmode = 4;
 				break;
-				/*case 4:
-					OSD::Notify("Sound Mode", Color::Lime);
-					mode = mode - 4;
-					setmode = 5;
-				break;*/
 			}
 		}
 		
@@ -58,9 +52,6 @@ namespace CTRPluginFramework
 				case 4: {
 					SetUpKB("Enter Snake ID:", true, 2, SnakeID, SnakeID);
 				} break;
-				/*case 5: {
-					SetUpKB("Enter Sound ID:", true, 2, SoundID, SoundID);
-				} break;*/
 			}
 		}
 		
@@ -68,7 +59,7 @@ namespace CTRPluginFramework
 			switch(setmode) {
 				case 0: return;
 				case 1: {
-					Animation::AnimationWrapper(AnimID, EmoteID, ItemID, SnakeID, SoundID);
+					Animation::AnimationWrapper(AnimID > 0x64 ? 3 : AnimID, EmoteID, ItemID, SnakeID, SoundID);
 				} break;
 				case 2: {
 					Animation::AnimationWrapper(0x56, EmoteID, 0, 0, 0);
@@ -79,9 +70,6 @@ namespace CTRPluginFramework
 				case 4: {
 					Animation::AnimationWrapper(0x5A, 0, 0, SnakeID, 0);
 				} break;
-				/*case 5: {
-					Animation::AnimationWrapper(AnimID, EmoteID, ItemID, SnakeID, SoundID);
-				} break;*/
 			}
 		}
 	}
@@ -92,7 +80,7 @@ namespace CTRPluginFramework
 		}
 	}
 	
-	void NPCCode(MenuEntry *entry) {
+	/*void NPCCode(MenuEntry *entry) {
 		static u8 animID = 0;
 		static u8 emotionID = 0;
 		static u16 snakeID = 0;
@@ -150,5 +138,5 @@ namespace CTRPluginFramework
 			
 			Animation::SetNPCAnimation(NPCOffset, animID, emotionID, snakeID);
 		}
-	}
+	}*/
 }

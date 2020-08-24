@@ -25,11 +25,5 @@ namespace CTRPluginFramework
 				OSD::Notify("Speed Mode " << Color::Red << "OFF");
 			}
 		}
-		/*0x33672DC8 = Hat
-		0x33672DCC = Accessoire
-		0x33672DD0 = Shirt
-		0x33672DD4 = Trousers
-		0x33672DD8 = Socks 739814
-		0x33672DDC = Shoes*/
 	}
 }

@@ -4,18 +4,19 @@ namespace CTRPluginFramework
 {
 	bool debugOSD(const Screen &screen) {	
 		u32 i = GameHelper::GetPInstance();
-		if(i != 0) {
-			float X = *GameHelper::GetCoordinates(), Z = *(float *)((u32)GameHelper::GetCoordinates() + 8);
-			u32 wX = GameHelper::GetWorldCoords(), wY = GameHelper::GetWorldCoords() + 4;
-			
-			if(screen.IsTop) {
-				screen.Draw("Coordinates: " << std::to_string(X).erase(4) << "|" << std::to_string(Z).erase(4), 0, 0);
-				screen.Draw("World Coordinates: " << Hex(*(u8 *)wX) << "|" << Hex(*(u8 *)wY), 0, 10);
-				screen.Draw("Room: " << Hex(*(u8 *)0x738CE9), 0, 20);
-				screen.Draw("Animation: " << Hex(Animation::GetCurrentAnim()), 0, 30);
-				screen.Draw("Emotion: " << Hex(Animation::GetCurrentEmotion()), 0, 40);
-				screen.Draw("Snake: " << Hex(Animation::GetCurrentSnake()), 0, 50);
-			}
+		if(i == 0) 
+			return 0;
+		
+		float X = *GameHelper::GetCoordinates(), Z = *(float *)((u32)GameHelper::GetCoordinates() + 8);
+		u32 wX = GameHelper::GetWorldCoords(), wY = GameHelper::GetWorldCoords() + 4;
+		
+		if(screen.IsTop) {
+			screen.Draw("Coordinates: " << std::to_string(X).erase(4) << "|" << std::to_string(Z).erase(4), 0, 0);
+			screen.Draw("World Coordinates: " << Hex(*(u8 *)wX) << "|" << Hex(*(u8 *)wY), 0, 10);
+			screen.Draw("Room: " << Hex(*(u8 *)0x738CE9), 0, 20);
+			screen.Draw("Animation: " << Hex(Animation::GetCurrentAnim()), 0, 30);
+			screen.Draw("Emotion: " << Hex(Animation::GetCurrentEmotion()), 0, 40);
+			screen.Draw("Snake: " << Hex(Animation::GetCurrentSnake()), 0, 50);
 		}
 		return 1;
 	} 
@@ -43,7 +44,7 @@ namespace CTRPluginFramework
 					kb.IsHexadecimal(true);
 					for(int i = 0; i < val; i++) {
 						Sleep(Milliseconds(100));
-						kb.GetMessage() = "Enter value for param " << std::to_string(i) << ":\n(0xABCDEF for current player instance)";
+						kb.GetMessage() = "Enter value for param " << std::to_string(i);
 						if(kb.Open(param[i]) != 0) 
 							return;
 					}
