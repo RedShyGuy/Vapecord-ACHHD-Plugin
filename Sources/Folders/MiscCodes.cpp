@@ -113,4 +113,4 @@ namespace CTRPluginFramework
 		else if(!entry->IsActivated()) 	
 			Process::Write32(0x44DAF4, 0xE59400A0);
 	}
-}//
+}
