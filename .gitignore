@@ -1,3 +1,7 @@
 /Build
 *.3gx
 *.lnk
+*.d
+*.o
+*.obj
+*.elf
