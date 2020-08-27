@@ -17,15 +17,26 @@ namespace CTRPluginFramework
 			case JPN: return(jpn);
 		}
 	}
+//get player offset
+	u32 GameHelper::GetPlayerOffset() {
+		Process::Write32((u32)&pfunction00, 0x4A07B8);
+		return pfunction00();
+	}
+//get player start
+	u32 GameHelper::GetPlayerData() {
+		u32 p = GameHelper::GetPlayerOffset();
+		p += 0x1BFA88;
+		return p;
+	}
 //Get Coords
-	float *GameHelper::GetCoordinates() {
+	u32 GameHelper::GetCoordinates() {
 		u32 i = GameHelper::GetPInstance();
 		if(i == 0) 
 			return 0;
 		
-		i += 0x50;
+		Process::Write32((u32)&pfunction01, 0x49D5C0);
 		
-		return(float *)i;
+		return pfunction01(1);;
 	}
 //get world coords
 	u32 GameHelper::GetWorldCoords() {
@@ -57,10 +68,9 @@ namespace CTRPluginFramework
 		Process::Write32((u32)&pfunction04, 0x480BDC);
 		pfunction04(0x7ED000, wX, wY, 0);
 	}
-	
 //Converts world coords to coords
 	float *GameHelper::WorldCoordsToCoords(u8 wX, u8 wY, float res[3]) {
-		volatile float *coords = GameHelper::GetCoordinates();
+		volatile float *coords = (float *)GameHelper::GetCoordinates();
 		if(coords != nullptr) 
 			res[1] = *(volatile float *)((u32)coords + 4);
 		

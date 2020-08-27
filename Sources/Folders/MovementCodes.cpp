@@ -41,7 +41,7 @@ namespace CTRPluginFramework
 
 	void coordmod(MenuEntry *entry) {
 		if(entry->Hotkeys[0].IsDown()) {
-			volatile float *pCoords = GameHelper::GetCoordinates();
+			volatile float *pCoords = (float *)GameHelper::GetCoordinates();
 			if(pCoords != nullptr) {
 				if(entry->Hotkeys[1].IsDown()) 
 					*pCoords -= cspeed;

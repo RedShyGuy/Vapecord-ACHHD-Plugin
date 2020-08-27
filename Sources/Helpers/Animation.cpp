@@ -10,9 +10,9 @@ namespace CTRPluginFramework
 	/*void Animation::SetNPCAnimation(u32 npc, u8 animID, u8 emotion, u16 snake) {
 		if(animID == 0xC) {
 			Process::Write32((u32)&pfunction03, 0x527E5C);
-			pfunction03(npc, 0, emotion);
 		}
 		else if(animID == 0xE) {
+			pfunction03(npc, 0, emotion);
 			Process::Write32((u32)&pfunction05, 0x528FA0);
 			pfunction05(npc, 0, snake, 0, 0);
 		}
@@ -90,10 +90,10 @@ namespace CTRPluginFramework
 		u32 wX = GameHelper::GetWorldCoords();
 		u32 wY = GameHelper::GetWorldCoords() + 4;
 
-		float coords[3];
+		/*float coords[3];
 		//Get Coordinates for animation
 		Process::Write32((u32)&pfunction02, 0x4A2488);
-		pfunction02(animInstance + 0x8, (u32)GameHelper::WorldCoordsToCoords(wX, wY, coords)); 
+		pfunction02(animInstance + 0x8, (u32)GameHelper::WorldCoordsToCoords(*(u8 *)wX, *(u8 *)wY, coords)); */
 
 		//emotion change
 		if(animID == 0x56) {
@@ -122,17 +122,31 @@ namespace CTRPluginFramework
 			Process::Write8(animInstance + 0x21, 1);
 			Process::Write8(animInstance + 0x22, 5);
 		}
+		//pick amiibo phone
+		else if(animID == 0x18) {
+			Process::Write32(animInstance + 0x1C, *(u32 *)GameHelper::GetCoordinates());
+			Process::Write32(animInstance + 0x20, *(u32 *)(GameHelper::GetCoordinates() + 4));
+			Process::Write32(animInstance + 0x24, *(u32 *)(GameHelper::GetCoordinates() + 8));
+			Process::Write16(animInstance + 0x28, 0x8258);
+		}
 		else if(animID == 0x44) {
 			//this makes the player coords not change after the animation
 			Process::Write8(animInstance + 0x20, 1);
 			Process::Write8(animInstance + 0x21, 1);
 		}
+		//Sit down
+		else if(animID == 0x2D | animID == 0x2E) {	
+			Process::Write32(animInstance + 0x20, *(u32 *)GameHelper::GetCoordinates());
+			Process::Write32(animInstance + 0x24, *(u32 *)(GameHelper::GetCoordinates() + 4));
+			Process::Write32(animInstance + 0x28, *(u32 *)(GameHelper::GetCoordinates() + 8));
+			Process::Write8(animInstance + 0x1C, 2);
+		}
 		//any other animation
 		else {
-			Process::Write16(animInstance + 0x1C, wX);		
-			Process::Write16(animInstance + 0x1D, wY);
+			Process::Write8(animInstance + 0x1C, *(u8 *)wX);		
+			Process::Write8(animInstance + 0x1D, *(u8 *)wY);
 		}
-		
+		 
 		//Execute standard Animation
 		Animation::ExecuteAnimation(animID, animInstance);
 	

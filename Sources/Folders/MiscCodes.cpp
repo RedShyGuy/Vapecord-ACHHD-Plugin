@@ -7,7 +7,7 @@ namespace CTRPluginFramework
 		if(i == 0) 
 			return 0;
 		
-		float X = *GameHelper::GetCoordinates(), Z = *(float *)((u32)GameHelper::GetCoordinates() + 8);
+		float X = *(float *)GameHelper::GetCoordinates(), Z = *(float *)(GameHelper::GetCoordinates() + 8);
 		u32 wX = GameHelper::GetWorldCoords(), wY = GameHelper::GetWorldCoords() + 4;
 		u32 ItemOffset = (u32)GameHelper::GetItemAtWorldCoords(*(u8 *)wX, *(u8 *)wY);
 		
@@ -41,8 +41,11 @@ namespace CTRPluginFramework
 		}
 		
 		if(entry->Hotkeys[1].IsDown()) {
-			u32 wX = GameHelper::GetWorldCoords(), wY = GameHelper::GetWorldCoords() + 4;
-			GameHelper::DropItem(ItemID, *(u32 *)wX, *(u32 *)wY);
+			if(*(u8 *)0x738CE9 == 0x01) {
+				u32 wX = GameHelper::GetWorldCoords(), wY = GameHelper::GetWorldCoords() + 4;
+					
+				GameHelper::DropItem(ItemID, *(u32 *)wX, *(u32 *)wY);
+			}
 		}
 	}
 
@@ -124,7 +127,20 @@ namespace CTRPluginFramework
 			}
 		}	
 	}
-	
+
+	void unlockshops(MenuEntry *entry) {
+		u32 p = GameHelper::GetPlayerOffset();
+		//Main Street
+		//School = 	 p + 0x1B4D80
+		//Hospital = p + 0x1B5EB8
+		//Cafe = 	 p + 0x1B6FF0
+		//Store = 	 p + 0x1B8128
+		
+		//Idk = 	 p + 0x1B9260
+		//Idk =		 p + 0x1BA398
+		
+	}
+
 	void fastgamespeed(MenuEntry *entry) { 
 		if(entry->WasJustActivated()) 
 			Process::Write32(0x44DAF4, 0xE3E004FF);
