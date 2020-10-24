@@ -123,7 +123,7 @@ namespace CTRPluginFramework
 			Process::Write8(animInstance + 0x22, 5);
 		}
 		//pick amiibo phone
-		else if(animID == 0x18) {
+		else if(animID == 0x18 | animID == 0x12) {
 			Process::Write32(animInstance + 0x1C, *(u32 *)GameHelper::GetCoordinates());
 			Process::Write32(animInstance + 0x20, *(u32 *)(GameHelper::GetCoordinates() + 4));
 			Process::Write32(animInstance + 0x24, *(u32 *)(GameHelper::GetCoordinates() + 8));
@@ -141,6 +141,7 @@ namespace CTRPluginFramework
 			Process::Write32(animInstance + 0x28, *(u32 *)(GameHelper::GetCoordinates() + 8));
 			Process::Write8(animInstance + 0x1C, 2);
 		}
+		
 		//any other animation
 		else {
 			Process::Write8(animInstance + 0x1C, *(u8 *)wX);		

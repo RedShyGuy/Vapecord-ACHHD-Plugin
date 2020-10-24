@@ -15,13 +15,6 @@ namespace CTRPluginFramework
 		static bool speedmode = false;
 		
 		if(speedmode ? Controller::IsKeysDown(entry->Hotkeys[0].GetKeys()) : Controller::IsKeysPressed(entry->Hotkeys[0].GetKeys())) {
-			/*Animation::AnimationWrapper(0x42, 0, Utils::Random(0x266A, 0x273E), 0, 0);
-			Animation::AnimationWrapper(0x42, 1, Utils::Random(0x273F, 0x2794), 0, 0);
-			Animation::AnimationWrapper(0x42, 2, Utils::Random(0x2324, 0x2566), 0, 0);			
-			Animation::AnimationWrapper(0x42, 3, Utils::Random(0x2567, 0x25E2), 0, 0); 
-			Animation::AnimationWrapper(0x42, 4, Utils::Random(0x25E3, 0x2606), 0, 0);
-			Animation::AnimationWrapper(0x42, 5, Utils::Random(0x2607, 0x2644), 0, 0);
-			Animation::AnimationWrapper(3, 0, 0, 0, 0);*/
 			u32 pData = GameHelper::GetPlayerData();
 			
 			Process::Write8(pData + 0xC, Utils::Random(0, 0x1F)); //Hair

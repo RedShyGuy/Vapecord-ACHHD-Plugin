@@ -141,9 +141,10 @@ namespace CTRPluginFramework
 		
 	}
 
-	void fastgamespeed(MenuEntry *entry) { 
+	void fastgamespeed(MenuEntry *entry) { 	
 		if(entry->WasJustActivated()) 
 			Process::Write32(0x44DAF4, 0xE3E004FF);
+
 		else if(!entry->IsActivated()) 	
 			Process::Write32(0x44DAF4, 0xE59400A0);
 	}
