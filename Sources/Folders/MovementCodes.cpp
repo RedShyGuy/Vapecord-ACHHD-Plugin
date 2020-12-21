@@ -18,11 +18,17 @@ namespace CTRPluginFramework
 		}
 	}
 	
+	void RoomChange(Keyboard& keyboard, KeyboardEvent& event) {
+		std::string input = keyboard.GetInput();
+		keyboard.GetMessage() = GameHelper::GetStageName(input != "" ? std::stoi(input, nullptr, 16) : 0);
+	}
+	
 	void roomwarp(MenuEntry *entry) {
 		u8 room = 0;
 		if(entry->Hotkeys[0].IsDown()) {
 			Sleep(Seconds(0.1f));
 			Keyboard kb("Type a Room ID.");
+			kb.OnKeyboardEvent(RoomChange);
 			if(kb.Open(room, room) != -1) {
 				GameHelper::RoomChange(room);
 			}

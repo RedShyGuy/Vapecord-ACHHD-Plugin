@@ -6,7 +6,6 @@
 #include "Helpers/Animation.hpp"
 #include "CTRPluginFramework/System/Rect.hpp"
 #include "MenuEntryhelpers.hpp"
-#include "ctrulib/util/utf.h"
 #include "strings.hpp"
 #include <cmath>
 #include <algorithm>
@@ -34,7 +33,7 @@
 	
 namespace CTRPluginFramework
 {		
-	using OnInputChange = void(*)(Keyboard &keyboard, InputChangeEvent &event);
+	using OnChangeCallback  = void(*)(Keyboard &keyboard, KeyboardEvent &event);
 	
 	extern vu32(*pfunction00)();
 	extern vu32(*pfunction01)(u32 param1);
@@ -74,10 +73,10 @@ namespace CTRPluginFramework
 	void playerchange(MenuEntry *entry);
 	
 	//Helper Keyboards
-	bool SetUpKB(const std::string &msg, bool hex, const int length, u64 &output, u64 def, OnInputChange cb = nullptr);
-	bool SetUpKB(const std::string &msg, bool hex, const int length, u32 &output, u32 def, OnInputChange cb = nullptr);
-	bool SetUpKB(const std::string &msg, bool hex, const int length, u16 &output, u16 def, OnInputChange cb = nullptr);
-	bool SetUpKB(const std::string &msg, bool hex, const int length, u8 &output, u8 def, OnInputChange cb = nullptr);
+	bool SetUpKB(const std::string &msg, bool hex, const int length, u64 &output, u64 def, OnChangeCallback cb = nullptr);
+	bool SetUpKB(const std::string &msg, bool hex, const int length, u32 &output, u32 def, OnChangeCallback cb = nullptr);
+	bool SetUpKB(const std::string &msg, bool hex, const int length, u16 &output, u16 def, OnChangeCallback cb = nullptr);
+	bool SetUpKB(const std::string &msg, bool hex, const int length, u8 &output, u8 def, OnChangeCallback cb = nullptr);
 }
 
 #endif

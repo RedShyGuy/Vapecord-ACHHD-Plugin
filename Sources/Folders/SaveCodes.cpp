@@ -1,5 +1,7 @@
 #include "cheats.hpp"
 
+#define SAVESIZE 0x2BE930
+
 namespace CTRPluginFramework
 {
 //Restore or dump TAKUMI save
@@ -27,7 +29,7 @@ namespace CTRPluginFramework
 					
 					if(dir.OpenFile(TAKUMI, savename, File::RWC) == 0) {
 						
-						if(TAKUMI.Dump(0x324A8340, 0x2BE930) == 0)
+						if(TAKUMI.Dump(GameHelper::GetTakumi(), SAVESIZE) == 0)
 							MessageBox("File Dumped: " + TAKUMI.GetFullName())();
 						
 						else 
@@ -48,7 +50,7 @@ namespace CTRPluginFramework
 				int userchoice = kb.Open();
 				if(userchoice != -1) {
 					if(dir.OpenFile(TAKUMI, files[userchoice], File::RWC) == 0) {
-						if(TAKUMI.Inject(0x324A8340, 0x2BE930) == 0) {
+						if(TAKUMI.Inject(GameHelper::GetTakumi(), SAVESIZE) == 0) {
 							MessageBox("Restore TAKUMI save was successful!")();
 						}
 						else MessageBox("Restore Error", "Could not inject TAKUMI save!")();

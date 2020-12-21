@@ -2,9 +2,8 @@
 
 namespace CTRPluginFramework
 {
-	bool debugOSD(const Screen &screen) {	
-		u32 i = GameHelper::GetPInstance();
-		if(i == 0) 
+	bool debugOSD(const Screen &screen) {
+		if(GameHelper::GetPInstance() == 0) 
 			return 0;
 		
 		float X = *(float *)GameHelper::GetCoordinates(), Z = *(float *)(GameHelper::GetCoordinates() + 8);
@@ -31,8 +30,7 @@ namespace CTRPluginFramework
 	}
 	
 	void Dropper(MenuEntry *entry) {
-		u32 i = GameHelper::GetPInstance();
-		if(i == 0) 
+		if(GameHelper::GetPInstance() == 0) 
 			return;
 		
 		static u32 ItemID = 0x7FFE;
@@ -44,12 +42,12 @@ namespace CTRPluginFramework
 			if(*(u8 *)0x738CE9 == 0x01) {
 				u32 wX = GameHelper::GetWorldCoords(), wY = GameHelper::GetWorldCoords() + 4;
 					
-				GameHelper::DropItem(ItemID, *(u32 *)wX, *(u32 *)wY);
+				GameHelper::DropItem(&ItemID, *(u32 *)wX, *(u32 *)wY);
 			}
 		}
 	}
 
-	//Made by Nico
+//Made by Nico
 	void miscFunctions(MenuEntry *entry) {	
 		if(entry->Hotkeys[0].IsDown()) {
 			s8 val;

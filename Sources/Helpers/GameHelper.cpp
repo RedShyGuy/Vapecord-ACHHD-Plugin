@@ -17,6 +17,16 @@ namespace CTRPluginFramework
 			case JPN: return(jpn);
 		}
 	}
+//Get room name
+	std::string GameHelper::GetStageName(u8 stageID) {
+		Process::Write32((u32)&pfunction01, 0x496FA8);
+		return (std::string)((char *)pfunction01(stageID));
+	}
+//get takumi
+	u32 GameHelper::GetTakumi() {
+		Process::Write32((u32)&pfunction00, 0x4A0554);
+		return pfunction00();
+	}
 //get player offset
 	u32 GameHelper::GetPlayerOffset() {
 		Process::Write32((u32)&pfunction00, 0x4A07B8);
@@ -59,14 +69,13 @@ namespace CTRPluginFramework
 		return (u32 *)pfunction04(GameHelper::GetCurrentMap(), wX, wY, 0);
 	}
 //drop function
-	void GameHelper::DropItem(u32 ItemID, u32 wX, u32 wY) {
+	void GameHelper::DropItem(u32 *ItemID, u32 wX, u32 wY) {
 		u32 i = GameHelper::GetPInstance();
 		if(i == 0) 
 			return;
 
-		Process::Write32(0x7ED000, ItemID);
 		Process::Write32((u32)&pfunction04, 0x480BDC);
-		pfunction04(0x7ED000, wX, wY, 0);
+		pfunction04((u32)ItemID, wX, wY, 0);
 	}
 //Converts world coords to coords
 	float *GameHelper::WorldCoordsToCoords(u8 wX, u8 wY, float res[3]) {
