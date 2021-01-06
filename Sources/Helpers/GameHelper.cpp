@@ -19,18 +19,18 @@ namespace CTRPluginFramework
 	}
 //Get room name
 	std::string GameHelper::GetStageName(u8 stageID) {
-		Process::Write32((u32)&pfunction01, 0x496FA8);
-		return (std::string)((char *)pfunction01(stageID));
+		Process::Write32((u32)&FUN, 0x496FA8);
+		return (std::string)((char *)FUN(stageID));
 	}
 //get takumi
 	u32 GameHelper::GetTakumi() {
-		Process::Write32((u32)&pfunction00, 0x4A0554);
-		return pfunction00();
+		Process::Write32((u32)&FUN, 0x4A0554);
+		return FUN();
 	}
 //get player offset
 	u32 GameHelper::GetPlayerOffset() {
-		Process::Write32((u32)&pfunction00, 0x4A07B8);
-		return pfunction00();
+		Process::Write32((u32)&FUN, 0x4A07B8);
+		return FUN();
 	}
 //get player start
 	u32 GameHelper::GetPlayerData() {
@@ -44,9 +44,9 @@ namespace CTRPluginFramework
 		if(i == 0) 
 			return 0;
 		
-		Process::Write32((u32)&pfunction01, 0x49D5C0);
+		Process::Write32((u32)&FUN, 0x49D5C0);
 		
-		return pfunction01(1);;
+		return FUN(1);;
 	}
 //get world coords
 	u32 GameHelper::GetWorldCoords() {
@@ -60,13 +60,13 @@ namespace CTRPluginFramework
 	}
 //Get current map	
 	u32 GameHelper::GetCurrentMap() {
-		Process::Write32((u32)&pfunction00, 0x50B1F8);
-		return pfunction00();
+		Process::Write32((u32)&FUN, 0x50B1F8);
+		return FUN();
 	}
 //get item at world coords
 	u32 *GameHelper::GetItemAtWorldCoords(u32 wX, u32 wY) {
-		Process::Write32((u32)&pfunction04, 0x57C890);
-		return (u32 *)pfunction04(GameHelper::GetCurrentMap(), wX, wY, 0);
+		Process::Write32((u32)&FUN, 0x57C890);
+		return (u32 *)FUN(GameHelper::GetCurrentMap(), wX, wY, 0);
 	}
 //drop function
 	void GameHelper::DropItem(u32 *ItemID, u32 wX, u32 wY) {
@@ -74,8 +74,8 @@ namespace CTRPluginFramework
 		if(i == 0) 
 			return;
 
-		Process::Write32((u32)&pfunction04, 0x480BDC);
-		pfunction04((u32)ItemID, wX, wY, 0);
+		Process::Write32((u32)&FUN, 0x480BDC);
+		FUN((u32)ItemID, wX, wY, 0);
 	}
 //Converts world coords to coords
 	float *GameHelper::WorldCoordsToCoords(u8 wX, u8 wY, float res[3]) {
@@ -96,12 +96,12 @@ namespace CTRPluginFramework
 	}
 //Call Room Change Function	
 	u32 GameHelper::RoomChange(u8 room) {
-		Process::Write32((u32)&pfunction04, 0x496F5C);
-		return pfunction04(room, 1, 1, 0);
+		Process::Write32((u32)&FUN, 0x496F5C);
+		return FUN(room, 1, 1, 0);
 	}
 //Get Player Instance	
 	u32 GameHelper::GetPInstance() {
-		Process::Write32((u32)&pfunction02, 0x49DA08);
-		return pfunction02(0, 1);
+		Process::Write32((u32)&FUN, 0x49DA08);
+		return FUN(0, 1);
 	}
 }

@@ -16,7 +16,11 @@ BUILD		:= 	Build
 INCLUDES	:= 	Includes
 SOURCES 	:= 	Sources \
                 Sources/Folders \
-				Sources/Helpers
+				Sources/Folders/SeedingCodes \
+				Sources/Helpers \
+				Sources/Helpers/Personal \
+				Sources/Helpers/Other \
+				Sources/Plugin
 				
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -74,7 +78,7 @@ $(BUILD):
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ... 
-	@rm -fr $(BUILD) $(OUTPUT).3gx
+	@rm -fr $(BUILD) $(OUTPUT).3gx $(OUTPUT).elf
 
 re: clean all
 
@@ -87,7 +91,9 @@ DEPENDS	:=	$(OFILES:.o=.d)
 #---------------------------------------------------------------------------------
 # main targets
 #---------------------------------------------------------------------------------
-$(OUTPUT).3gx : $(OFILES)
+$(OUTPUT).3gx : $(OUTPUT).elf
+
+$(OUTPUT).elf : $(OFILES)
 
 #---------------------------------------------------------------------------------
 # you need a rule like this for each extension you use as binary data

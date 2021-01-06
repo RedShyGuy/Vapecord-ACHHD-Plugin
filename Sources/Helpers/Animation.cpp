@@ -56,8 +56,8 @@ namespace CTRPluginFramework
 		if(player == 0)
 			return 0;
 		//Return Animation Instance
-		Process::Write32((u32)&pfunction01, 0x4DDE0C);
-		return pfunction01(player);
+		Process::Write32((u32)&FUN, 0x4DDE0C);
+		return FUN(player);
 	}
 //Execute Animation	
 	u32 Animation::ExecuteAnimation(u8 animID, u32 animInstance) {
@@ -69,8 +69,8 @@ namespace CTRPluginFramework
 		if(animInstance == 0)
 			return 0;
 		//Executes Animation
-		Process::Write32((u32)&pfunction04, 0x4D8960);
-		return pfunction04(player, animID, animInstance, 0);
+		Process::Write32((u32)&FUN, 0x4D8960);
+		return FUN(player, animID, animInstance, 0);
 	}
 //Animation Wrapper
 	bool Animation::AnimationWrapper(u8 animID, u8 emotion, u16 item, u16 snake, u16 sound) {

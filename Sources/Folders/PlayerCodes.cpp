@@ -7,8 +7,8 @@ namespace CTRPluginFramework
 		if(i == 0)
 			return;
 		
-		Process::Write32((u32)&pfunction02, 0x4F02FC);
-		pfunction02(i, 0);
+		Process::Write32((u32)&FUN, 0x4F02FC);
+		FUN(i, 0);
 	}
 	
 	void playerchange(MenuEntry *entry) {

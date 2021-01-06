@@ -1,6 +1,6 @@
 @echo off
 cls
 make clean
-make
+make -j 8
 rd /s /q Build
 pause

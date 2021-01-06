@@ -47,84 +47,72 @@ namespace CTRPluginFramework
 		}
 	}
 
-//Made by Nico
-	void miscFunctions(MenuEntry *entry) {	
-		if(entry->Hotkeys[0].IsDown()) {
-			s8 val;
-			static u32 lastExecuted;
-			u32 player, targetPlayer, animInstance, x, y;
-			u32 param[11], res;
-			Keyboard kb("");
-			if(SetUpKB("Enter address of function:", true, 8, lastExecuted, lastExecuted)) {
-				u8 val;
-				if(SetUpKB("Enter parameter count (max 11):", false, 2, val, 0)) {
-					val = val % 12;
-					kb.SetMaxLength(8);
-					kb.IsHexadecimal(true);
-					for(int i = 0; i < val; i++) {
-						Sleep(Milliseconds(100));
-						kb.GetMessage() = "Enter value for param " << std::to_string(i);
-						if(kb.Open(param[i]) != 0) 
-							return;
-					}
+	static bool Turbo_Call = false;
+
+	void FunctionsCaller(MenuEntry *entry) {
+		static u32 funcaddress;
+		static u32 p[11];
+		u32 result;
+		static int size;
+
+        if(Controller::IsKeysPressed(entry->Hotkeys[0].GetKeys())) {
+            if(SetUpKB("Enter address of function:", true, 8, funcaddress, funcaddress)) {
+				Keyboard KB("Enter ID:");
+				KB.SetMaxLength(8);
+				KB.IsHexadecimal(true);
+				for(int i = 0; i < 12; i++) {
 					Sleep(Milliseconds(100));
-					switch(val) {
-						case 0:
-							Process::Write32((u32)&pfunction00, lastExecuted);
-							res = pfunction00();
-							break;
-						case 1:
-							Process::Write32((u32)&pfunction01, lastExecuted);
-							res = pfunction01(param[0]);
-							break;
-						case 2:
-							Process::Write32((u32)&pfunction02, lastExecuted);
-							res = pfunction02(param[0], param[1]);
-							break;
-						case 3:
-							Process::Write32((u32)&pfunction03, lastExecuted);
-							res = pfunction03(param[0], param[1], param[2]);
-							break;
-						case 4:
-							Process::Write32((u32)&pfunction04, lastExecuted);
-							res = pfunction04(param[0], param[1], param[2], param[3]);
-							break;
-						case 5:
-							Process::Write32((u32)&pfunction05, lastExecuted);
-							res = pfunction05(param[0], param[1], param[2], param[3], param[4]);
-							break;
-						case 6:
-							Process::Write32((u32)&pfunction06, lastExecuted);
-							res = pfunction06(param[0], param[1], param[2], param[3], param[4], param[5]);
-							break;
-						case 7:
-							Process::Write32((u32)&pfunction07, lastExecuted);
-							res = pfunction07(param[0], param[1], param[2], param[3], param[4], param[5], param[6]);
-							break;
-						case 8:
-							Process::Write32((u32)&pfunction08, lastExecuted);
-							res = pfunction08(param[0], param[1], param[2], param[3], param[4], param[5], param[6], param[7]);
-							break;
-						case 9:
-							Process::Write32((u32)&pfunction09, lastExecuted);
-							res = pfunction09(param[0], param[1], param[2], param[3], param[4], param[5], param[6], param[7], param[8]);
-							break;
-						case 10:
-							Process::Write32((u32)&pfunction010, lastExecuted);
-							res = pfunction010(param[0], param[1], param[2], param[3], param[4], param[5], param[6], param[7], param[8], param[9]);
-							break;
-						case 11:
-							Process::Write32((u32)&pfunction011, lastExecuted);
-							res = pfunction011(param[0], param[1], param[2], param[3], param[4], param[5], param[6], param[7], param[8], param[9], param[10]);
-							break;
-						default:
-							return;
+					KB.GetMessage() = "Enter value for param " << std::to_string(i) << ":" << 
+					"\n" << Color::Blue << "0x11111111 for player instance" << 
+					"\n" << Color::Red << "0x22222222 for animation instance" << 
+					"\n" << Color::Green << "0x33333333 for map offset";
+					
+					if(KB.Open(p[i]) == -1) {
+						size = i--;
+						OSD::Notify("Set Function: " << Hex(funcaddress) << " with " << std::to_string(size) << " parameters!");
+						return;
 					}
-					OSD::Notify("Returned value: " << Hex(res));
-				}
+
+					switch(p[i]) {
+						case 0x11111111: 
+							p[i] = GameHelper::GetPlayerOffset();
+						break;
+
+						case 0x22222222:
+							p[i] = Animation::GetAnimationInstance();
+						break;
+
+						case 0x33333333:
+							p[i] = GameHelper::GetCurrentMap();
+						break;
+					}
+				}	
 			}
-		}	
-	}
+        }
+
+		if(Turbo_Call ? Controller::IsKeysDown(entry->Hotkeys[1].GetKeys()) : Controller::IsKeysPressed(entry->Hotkeys[1].GetKeys())) {
+			if(!Process::CheckAddress(funcaddress))
+				return;
+
+			Sleep(Milliseconds(100));
+			Process::Write32((u32)&FUN, funcaddress);
+			switch(size) {
+				case 0: result = FUN(); break;
+				case 1: result = FUN(p[0]); break;
+				case 2: result = FUN(p[0], p[1]); break;
+				case 3: result = FUN(p[0], p[1], p[2]); break;
+				case 4: result = FUN(p[0], p[1], p[2], p[3]); break;
+				case 5: result = FUN(p[0], p[1], p[2], p[3], p[4]); break;
+				case 6: result = FUN(p[0], p[1], p[2], p[3], p[4], p[5]); break;
+				case 7: result = FUN(p[0], p[1], p[2], p[3], p[4], p[5], p[6]); break;
+				case 8: result = FUN(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7]); break;
+				case 9: result = FUN(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8]); break;
+				case 10: result = FUN(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9]); break;
+				case 11: result = FUN(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10]); break;
+			}
+			OSD::Notify("Returned Value: " << Hex(result));
+		}
+    }
 
 	void unlockshops(MenuEntry *entry) {
 		u32 p = GameHelper::GetPlayerOffset();
