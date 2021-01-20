@@ -2,34 +2,9 @@
 #define CHEATS_H
 
 #include <CTRPluginFramework.hpp>
+#include <3ds.h>
 #include "Helpers/GameHelper.hpp"
 #include "Helpers/Animation.hpp"
-#include "CTRPluginFramework/System/Rect.hpp"
-#include "MenuEntryhelpers.hpp"
-#include "strings.hpp"
-#include <cmath>
-#include <algorithm>
-
-#define READU32(x)      *(u32 *)(x)
-#define READU16(x)      *(u16 *)(x)
-#define READU8(x)       *(u8 *)(x)
-#define READFLOAT(x)    *(float *)(x)
-
-#define WRITEU8(a, v)   *(u8 *)(a) = (u8)v
-#define WRITEU16(a, v)  *(u16 *)(a) = (u16)v
-#define WRITEU32(a, v)  *(u32 *)(a) = (u32)v 
-#define WRITEU64(a, v)  *(u64 *)(a) = (u64)v
-
-#define ADD32(a, v)     *(u32 *)a += v
-#define SUB32(a, v)     *(u32 *)a -= v
-#define ADD64(a, v)     *(vs64 *)a += v
-#define SUB64(a, v)     *(vs64 *)a -= v
-#define ADD16(a, v)     *(u16 *)a += v
-#define SUB16(a, v)     *(u16 *)a -= v
-#define ADD8(a, v)      *(u8 *)a += v
-#define SUB8(a, v)      *(u8 *)a -= v
-#define ADDTOFLOAT(a, v)  *((float*)(a)) += (float)v
-#define SUBTOFLOAT(a, v)  *((float*)(a)) -= (float)v
 	
 namespace CTRPluginFramework
 {		
@@ -61,6 +36,14 @@ namespace CTRPluginFramework
 	//Unused For Now
 	void playerchange(MenuEntry *entry);
 	
+	class Code
+	{
+	public:
+		
+		static void     Load(void);
+		static u32		ROOM_ID;
+	};
+
 	//Helper Keyboards
 	bool SetUpKB(const std::string &msg, bool hex, const int length, u64 &output, u64 def, OnChangeCallback cb = nullptr);
 	bool SetUpKB(const std::string &msg, bool hex, const int length, u32 &output, u32 def, OnChangeCallback cb = nullptr);

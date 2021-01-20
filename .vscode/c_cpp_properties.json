@@ -14,7 +14,7 @@
                 "C:/devkitPro/devkitARM/lib/**",
                 "C:/devkitPro/libctru/include",
                 "C:/devkitPro/libctrpf/include",
-                "C:/devkitPro/portlibs/3ds/include",
+                "C:/devkitPro/portlibs/3ds/bin",
                 "${workspaceFolder}/includes"
             ]
         }

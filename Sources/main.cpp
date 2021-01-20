@@ -110,14 +110,14 @@ namespace CTRPluginFramework
 	Color PlayerCodes(0xFF0033FF);
 	Color AnimationCodes(0xFF0033FF);
 	Color MiscCodes(0xFF0033FF);
-	
-	int	main(void) {
-		PluginMenu *menu = new PluginMenu("ACHHD Vapecord Public Plugin", 1, 0, 0, "Creator: Lukas#4444.\nThanks to Kominost for the Walk Over Things! \nSpecial thanks: Fussels  \nDiscord: https://discord.gg/w9nvqjW");
-		menu->SynchronizeWithFrame(true);
-		menu->Callback(ToolFix);
-		menu->Callback(UmbrellaSecretEquip);
-		MenuFolder *SAVECODES = nullptr, *MOVECODES = nullptr, *PLAYERCODES = nullptr, *ANIMCODES = nullptr, *MISCCODES = nullptr;
 
+	MenuFolder *SAVECODES;
+	MenuFolder *MOVECODES;
+	MenuFolder *PLAYERCODES;
+	MenuFolder *ANIMCODES;
+	MenuFolder *MISCCODES;
+	
+	void LoadEntrys(PluginMenu *menu) {
 		SAVECODES = new MenuFolder(Color(SaveCodes) << "Save Codes");
 		SAVECODES->Append(new MenuEntry(Color(PlayerCodes) << "Save Settings" , nullptr, SaveSettings, "Lets you dump or restore your TAKUMI save")),
 		menu->Append(SAVECODES);
@@ -145,6 +145,17 @@ namespace CTRPluginFramework
 	    MISCCODES->Append(EntryWithHotkey(new MenuEntry(Color(MiscCodes) << "Execute Functions" , FunctionsCaller, "Lets you execute functions"), { Hotkey(Key::L | Key::DPadRight, "Input Function Data"), Hotkey(Key::L | Key::DPadDown, "Call Function") })),
 		MISCCODES->Append(new MenuEntry(Color(MiscCodes) << "Fast Game Speed", fastgamespeed, "Speeds up your game.")),
 		menu->Append(MISCCODES);
+	}
+
+	int	main(void) {
+		PluginMenu *menu = new PluginMenu("ACHHD Vapecord Public Plugin", 1, 0, 1, "Creator: Lukas#4444.\nThanks to Kominost for the Walk Over Things! \nSpecial thanks: Fussels  \nDiscord: https://discord.gg/w9nvqjW");
+		menu->SynchronizeWithFrame(true);
+		menu->Callback(ToolFix);
+		menu->Callback(UmbrellaSecretEquip);
+
+		LoadEntrys(menu);
+
+		Code::Load();
 
 		menu->Run();
 

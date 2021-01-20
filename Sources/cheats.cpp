@@ -3,6 +3,12 @@
 namespace CTRPluginFramework
 {
 	vu32(*FUN)(...);
+	
+	void Code::Load(void) {
+		ROOM_ID = Region::AutoRegion(0x738CE9, -1, -1);
+	}
+
+	u32 	Code::ROOM_ID = 0;
 
 	bool SetUpKB(const std::string &msg, bool hex, const int length, u64 &output, u64 def, OnChangeCallback cb) {
 		Sleep(Milliseconds(100));

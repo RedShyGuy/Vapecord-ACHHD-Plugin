@@ -12,12 +12,12 @@ namespace CTRPluginFramework
 		
 		if(screen.IsTop) {
 			screen.Draw("Coordinates: " << std::to_string(X).erase(4) << "|" << std::to_string(Z).erase(4), 0, 0);
-			screen.Draw("World Coordinates: " << Hex(*(u8 *)wX) << "|" << Hex(*(u8 *)wY), 0, 10);
-			screen.Draw("Room: " << Hex(*(u8 *)0x738CE9), 0, 20);
-			screen.Draw("Animation: " << Hex(Animation::GetCurrentAnim()), 0, 30);
-			screen.Draw("Emotion: " << Hex(Animation::GetCurrentEmotion()), 0, 40);
-			screen.Draw("Snake: " << Hex(Animation::GetCurrentSnake()), 0, 50);
-			screen.Draw("Standing on: " << (ItemOffset != 0 ? Hex(*(u32 *)ItemOffset) : "N/A"), 0, 60);
+			screen.Draw(Utils::Format("World Coordinates: %02X|%02X", *(u8 *)wX, *(u8 *)wY), 0, 10);
+			screen.Draw(Utils::Format("Room: %02X", *(u8 *)Code::ROOM_ID), 0, 20);
+			screen.Draw(Utils::Format("Animation: %02X", Animation::GetCurrentAnim()), 0, 30);
+			screen.Draw(Utils::Format("Emotion: %02X", Animation::GetCurrentEmotion()), 0, 40);
+			screen.Draw(Utils::Format("Snake: %03X", Animation::GetCurrentSnake()), 0, 50);
+			screen.Draw("Standing on: " << (ItemOffset != 0 ? Utils::Format("%08X", *(u32 *)ItemOffset) : "N/A"), 0, 60);
 		}
 		return 1;
 	} 
@@ -39,7 +39,7 @@ namespace CTRPluginFramework
 		}
 		
 		if(entry->Hotkeys[1].IsDown()) {
-			if(*(u8 *)0x738CE9 == 0x01) {
+			if(*(u8 *)Code::ROOM_ID == 0x01) {
 				u32 wX = GameHelper::GetWorldCoords(), wY = GameHelper::GetWorldCoords() + 4;
 					
 				GameHelper::DropItem(&ItemID, *(u32 *)wX, *(u32 *)wY);
@@ -69,7 +69,7 @@ namespace CTRPluginFramework
 					
 					if(KB.Open(p[i]) == -1) {
 						size = i--;
-						OSD::Notify("Set Function: " << Hex(funcaddress) << " with " << std::to_string(size) << " parameters!");
+						OSD::Notify(Utils::Format("Set Function: %08X with %02d parameters!" , funcaddress, size));
 						return;
 					}
 
@@ -110,7 +110,7 @@ namespace CTRPluginFramework
 				case 10: result = FUN(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9]); break;
 				case 11: result = FUN(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10]); break;
 			}
-			OSD::Notify("Returned Value: " << Hex(result));
+			OSD::Notify(Utils::Format("Returned Value: %08X", result));
 		}
     }
 
@@ -128,10 +128,11 @@ namespace CTRPluginFramework
 	}
 
 	void fastgamespeed(MenuEntry *entry) { 	
+		u32 FAST_GAME = Region::AutoRegion(0x44DAF4, -1, -1);
 		if(entry->WasJustActivated()) 
-			Process::Write32(0x44DAF4, 0xE3E004FF);
+			Process::Write32(FAST_GAME, 0xE3E004FF);
 
 		else if(!entry->IsActivated()) 	
-			Process::Write32(0x44DAF4, 0xE59400A0);
+			Process::Write32(FAST_GAME, 0xE59400A0);
 	}
 }
