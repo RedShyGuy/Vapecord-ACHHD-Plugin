@@ -1,21 +1,21 @@
 #include "cheats.hpp"
 
-namespace CTRPluginFramework
-{
+namespace CTRPluginFramework {
 	void AppearanceUpdate() {
 		u32 i = GameHelper::GetPInstance();
 		if(i == 0)
 			return;
 		
-		Process::Write32((u32)&FUN, 0x4F02FC);
-		FUN(i, 0);
+		static const u32 APPEARANCE_DAT = Region::AutoRegion(0x4F02FC, 0x4F02C8, -1);
+		static FUNCT func = FUNCT(APPEARANCE_DAT);
+		func.Call<void>(i, 0);
 	}
 	
 	void playerchange(MenuEntry *entry) {
 		static bool speedmode = false;
 		
 		if(speedmode ? Controller::IsKeysDown(entry->Hotkeys[0].GetKeys()) : Controller::IsKeysPressed(entry->Hotkeys[0].GetKeys())) {
-			u32 pData = GameHelper::GetPlayerData();
+			static const u32 pData = GameHelper::GetPlayerData();
 			
 			Process::Write8(pData + 0xC, Utils::Random(0, 0x1F)); //Hair
 			Process::Write8(pData + 0xD, Utils::Random(0, 7)); //Tan
@@ -34,16 +34,10 @@ namespace CTRPluginFramework
 			AppearanceUpdate();
 			Sleep(Milliseconds(150));
 		}
+
 		if(Controller::IsKeysPressed(entry->Hotkeys[1].GetKeys())) {
-			if(!speedmode) {
-				speedmode = true;
-				OSD::Notify("Speed Mode " << Color::Green << "ON");
-			}
-			
-			else {
-				speedmode = false;
-				OSD::Notify("Speed Mode " << Color::Red << "OFF");
-			}
+			speedmode = !speedmode;
+			OSD::Notify("Speed Mode " << (speedmode ? (Color::Green << "ON") : (Color::Red << "OFF")));
 		}
 	}
 }

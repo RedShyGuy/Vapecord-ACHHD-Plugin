@@ -1,23 +1,22 @@
 #include "cheats.hpp"
 
-namespace CTRPluginFramework
-{
+namespace CTRPluginFramework {
 	bool debugOSD(const Screen &screen) {
 		if(GameHelper::GetPInstance() == 0) 
 			return 0;
 		
-		float X = *(float *)GameHelper::GetCoordinates(), Z = *(float *)(GameHelper::GetCoordinates() + 8);
-		u32 wX = GameHelper::GetWorldCoords(), wY = GameHelper::GetWorldCoords() + 4;
-		u32 ItemOffset = (u32)GameHelper::GetItemAtWorldCoords(*(u8 *)wX, *(u8 *)wY);
+		volatile float *pCoords = GameHelper::GetCoordinates();
+
+		Coord worldCoords = GameHelper::GetWorldCoords();
+		u32 ItemOffset = (u32)GameHelper::GetItemAtWorldCoords(worldCoords);
 		
 		if(screen.IsTop) {
-			screen.Draw("Coordinates: " << std::to_string(X).erase(4) << "|" << std::to_string(Z).erase(4), 0, 0);
-			screen.Draw(Utils::Format("World Coordinates: %02X|%02X", *(u8 *)wX, *(u8 *)wY), 0, 10);
-			screen.Draw(Utils::Format("Room: %02X", *(u8 *)Code::ROOM_ID), 0, 20);
+			screen.Draw("Coordinates: " << std::to_string(*pCoords).erase(4) << "|" << std::to_string(*((float *)((vu32)pCoords + 8))).erase(4), 0, 0);
+			screen.Draw(Utils::Format("World Coordinates: %02X|%02X", worldCoords.wX, worldCoords.wY), 0, 10);
+			screen.Draw(Utils::Format("Room: %02X", GameHelper::GetStageID()), 0, 20);
 			screen.Draw(Utils::Format("Animation: %02X", Animation::GetCurrentAnim()), 0, 30);
-			screen.Draw(Utils::Format("Emotion: %02X", Animation::GetCurrentEmotion()), 0, 40);
-			screen.Draw(Utils::Format("Snake: %03X", Animation::GetCurrentSnake()), 0, 50);
-			screen.Draw("Standing on: " << (ItemOffset != 0 ? Utils::Format("%08X", *(u32 *)ItemOffset) : "N/A"), 0, 60);
+			screen.Draw(Utils::Format("Snake: %03X", Animation::GetCurrentSnake()), 0, 40);
+			screen.Draw("Standing on: " << (ItemOffset != 0 ? Utils::Format("%08X", *(u32 *)ItemOffset) : "N/A"), 0, 50);
 		}
 		return 1;
 	} 
@@ -35,14 +34,13 @@ namespace CTRPluginFramework
 		
 		static u32 ItemID = 0x7FFE;
 		if(Controller::IsKeysPressed(entry->Hotkeys[0].GetKeys())) {
-			SetUpKB("Enter Item ID", true, 8, ItemID, ItemID);
+			Wrap::KB<u32>("Enter Item ID:", true, 8, ItemID, ItemID);
 		}
 		
 		if(entry->Hotkeys[1].IsDown()) {
-			if(*(u8 *)Code::ROOM_ID == 0x01) {
-				u32 wX = GameHelper::GetWorldCoords(), wY = GameHelper::GetWorldCoords() + 4;
-					
-				GameHelper::DropItem(&ItemID, *(u32 *)wX, *(u32 *)wY);
+			if(GameHelper::GetStageID() == 1) {
+				Coord worldCoords = GameHelper::GetWorldCoords();
+				GameHelper::DropItem(&ItemID, worldCoords);
 			}
 		}
 	}
@@ -56,7 +54,7 @@ namespace CTRPluginFramework
 		static int size;
 
         if(Controller::IsKeysPressed(entry->Hotkeys[0].GetKeys())) {
-            if(SetUpKB("Enter address of function:", true, 8, funcaddress, funcaddress)) {
+			if(Wrap::KB<u32>("Enter address of function:", true, 8, funcaddress, funcaddress)) {
 				Keyboard KB("Enter ID:");
 				KB.SetMaxLength(8);
 				KB.IsHexadecimal(true);
@@ -95,20 +93,20 @@ namespace CTRPluginFramework
 				return;
 
 			Sleep(Milliseconds(100));
-			Process::Write32((u32)&FUN, funcaddress);
+			static FUNCT func = FUNCT(funcaddress);
 			switch(size) {
-				case 0: result = FUN(); break;
-				case 1: result = FUN(p[0]); break;
-				case 2: result = FUN(p[0], p[1]); break;
-				case 3: result = FUN(p[0], p[1], p[2]); break;
-				case 4: result = FUN(p[0], p[1], p[2], p[3]); break;
-				case 5: result = FUN(p[0], p[1], p[2], p[3], p[4]); break;
-				case 6: result = FUN(p[0], p[1], p[2], p[3], p[4], p[5]); break;
-				case 7: result = FUN(p[0], p[1], p[2], p[3], p[4], p[5], p[6]); break;
-				case 8: result = FUN(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7]); break;
-				case 9: result = FUN(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8]); break;
-				case 10: result = FUN(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9]); break;
-				case 11: result = FUN(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10]); break;
+				case 0: result = func.Call<u32>(); break;
+				case 1: result = func.Call<u32>(p[0]); break;
+				case 2: result = func.Call<u32>(p[0], p[1]); break;
+				case 3: result = func.Call<u32>(p[0], p[1], p[2]); break;
+				case 4: result = func.Call<u32>(p[0], p[1], p[2], p[3]); break;
+				case 5: result = func.Call<u32>(p[0], p[1], p[2], p[3], p[4]); break;
+				case 6: result = func.Call<u32>(p[0], p[1], p[2], p[3], p[4], p[5]); break;
+				case 7: result = func.Call<u32>(p[0], p[1], p[2], p[3], p[4], p[5], p[6]); break;
+				case 8: result = func.Call<u32>(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7]); break;
+				case 9: result = func.Call<u32>(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8]); break;
+				case 10: result = func.Call<u32>(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9]); break;
+				case 11: result = func.Call<u32>(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10]); break;
 			}
 			OSD::Notify(Utils::Format("Returned Value: %08X", result));
 		}
@@ -128,11 +126,10 @@ namespace CTRPluginFramework
 	}
 
 	void fastgamespeed(MenuEntry *entry) { 	
-		u32 FAST_GAME = Region::AutoRegion(0x44DAF4, -1, -1);
+		static const u32 FAST_GAME = Region::AutoRegion(0x44DAF4, 0x44D9DC, -1);
 		if(entry->WasJustActivated()) 
-			Process::Write32(FAST_GAME, 0xE3E004FF);
-
+			Process::Patch(FAST_GAME, 0xE3E004FF);
 		else if(!entry->IsActivated()) 	
-			Process::Write32(FAST_GAME, 0xE59400A0);
+			Process::Patch(FAST_GAME, 0xE59400A0);
 	}
 }

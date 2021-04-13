@@ -3,8 +3,7 @@
 #include "cheats.hpp"
 #include <vector>
 
-namespace CTRPluginFramework
-{	
+namespace CTRPluginFramework {
 	static MenuEntry *EntryWithHotkey(MenuEntry *entry, const Hotkey &hotkey) {
         if (entry != nullptr) {
             entry->Hotkeys += hotkey;
@@ -26,12 +25,15 @@ namespace CTRPluginFramework
         }
         return (entry);
     }
+
+	const Color PressedButton(0x505050A0);
 	
 	void PatchProcess(FwkSettings &settings) {
 		//OPTIONS
 		settings.ThreadPriority = 0x30;
+
 		settings.BackgroundMainColor = Color::Black;
-		settings.BackgroundSecondaryColor = Color::Black;
+		settings.BackgroundSecondaryColor = Color::Black; 
 		settings.WindowTitleColor = Color::Yellow;
 		settings.MenuSelectedItemColor = Color::Lime;
 		settings.MenuUnselectedItemColor = Color::White;
@@ -46,11 +48,9 @@ namespace CTRPluginFramework
 		settings.CustomKeyboard.BackgroundSecondary = Color::Black;
 		settings.CustomKeyboard.BackgroundBorder = Color::Silver;
 		settings.CustomKeyboard.KeyBackground = Color::Black;
-		settings.CustomKeyboard.KeyBackgroundPressed = Color::Silver;
-		settings.CustomKeyboard.KeyText = Color::Lime;
-		settings.CustomKeyboard.KeyTextPressed = Color::Lime;
-		settings.CustomKeyboard.ScrollBarBackground = Color::Black;
-		settings.CustomKeyboard.ScrollBarThumb = Color::Black;
+		settings.CustomKeyboard.KeyBackgroundPressed = Color(PressedButton);
+		settings.CustomKeyboard.KeyText = Color::White;
+		settings.CustomKeyboard.KeyTextPressed = Color::White;
 	}
 	
 	void ToolFix(void) {
@@ -77,8 +77,7 @@ namespace CTRPluginFramework
 	
 	//very neccessary lol 
 	void UmbrellaSecretEquip(void) {
-		u8 room = *(u8 *)0x738CE9;
-		if(room != 0x0A)
+		if(GameHelper::GetStageID() != 0xA)
 			return;
 		
 		u32 i = GameHelper::GetPInstance();
@@ -89,11 +88,8 @@ namespace CTRPluginFramework
 		if(currentTool != 0x7FFE)
 			return;
 		
-		u32 wX = GameHelper::GetWorldCoords();
-		u32 wY = GameHelper::GetWorldCoords() + 4;
-		if(*(u8 *)wX != 0x0F)
-			return;
-		if(*(u8 *)wY != 0x0C)
+		Coord worldCoords = GameHelper::GetWorldCoords();
+		if(worldCoords.wX != 0xF || worldCoords.wY != 0xC)
 			return;
 		
 		if(!Controller::IsKeyPressed(Key::A))
@@ -105,17 +101,32 @@ namespace CTRPluginFramework
 		Animation::AnimationWrapper(0x43, 0, 0x3277, 0, 0);
 	}
 	
-	Color SaveCodes(0xFF0033FF);
-	Color MovementCodes(0xFF0033FF);
-	Color PlayerCodes(0xFF0033FF);
-	Color AnimationCodes(0xFF0033FF);
-	Color MiscCodes(0xFF0033FF);
+	static const Color SaveCodes(0xFF0033FF);
+	static const Color MovementCodes(0xFF0033FF);
+	static const Color PlayerCodes(0xFF0033FF);
+	static const Color AnimationCodes(0xFF0033FF);
+	static const Color MiscCodes(0xFF0033FF);
 
 	MenuFolder *SAVECODES;
 	MenuFolder *MOVECODES;
 	MenuFolder *PLAYERCODES;
 	MenuFolder *ANIMCODES;
 	MenuFolder *MISCCODES;
+
+	std::string GetRegionName(void) {
+		switch(Process::GetTitleID()) {
+			case TITLEID_USA: 
+				c_Region = CurrRegion::USA; 
+			return "USA";
+			case TITLEID_EUR: 
+				c_Region = CurrRegion::EUR;
+			return "EUR";
+			case TITLEID_JPN: 
+				c_Region = CurrRegion::JPN;
+			return "JPN";
+			default: return "";
+		}
+	}
 	
 	void LoadEntrys(PluginMenu *menu) {
 		SAVECODES = new MenuFolder(Color(SaveCodes) << "Save Codes");
@@ -129,7 +140,7 @@ namespace CTRPluginFramework
 		menu->Append(MOVECODES);
 
 		PLAYERCODES = new MenuFolder(Color(PlayerCodes) << "Player Codes");
-		PLAYERCODES->Append(EntryWithHotkey(new MenuEntry(Color(PlayerCodes) << "Outfit Randomizer", playerchange, "Lets you randomize your players outfit."), { Hotkey(Key::L | Key::DPadRight, "Randomize Outfit"), Hotkey(Key::L |Key::DPadLeft, "Set Speed") } )),
+		PLAYERCODES->Append(EntryWithHotkey(new MenuEntry(Color(PlayerCodes) << "Player Randomizer", playerchange, "Lets you randomize your players appearance and outfit."), { Hotkey(Key::L | Key::DPadRight, "Randomize Outfit"), Hotkey(Key::L |Key::DPadLeft, "Set Speed") } )),
 		menu->Append(PLAYERCODES);
 
 		ANIMCODES = new MenuFolder(Color(AnimationCodes) << "Animation Codes");
@@ -139,23 +150,21 @@ namespace CTRPluginFramework
 		menu->Append(ANIMCODES);
 		
 		MISCCODES = new MenuFolder(Color(MiscCodes) << "Misc Codes");
-		MISCCODES->Append(new MenuEntry(Color(MiscCodes) << "Debug OSD", debug, "Shows you usefull informations.")),
+		MISCCODES->Append(new MenuEntry(Color(MiscCodes) << "Player Info", debug, "Shows you usefull informations.")),
 		MISCCODES->Append(EntryWithHotkey(new MenuEntry(Color(MiscCodes) << "Instant Drop", Dropper, "Lets you drop items in an instant!"), { Hotkey(Key::L | Key::DPadRight, "Select Item ID"), Hotkey(Key::L | Key::DPadDown, "Drop Item") } )),
-		//Not for the release neccessary
+	//Not for the release neccessary
 	    MISCCODES->Append(EntryWithHotkey(new MenuEntry(Color(MiscCodes) << "Execute Functions" , FunctionsCaller, "Lets you execute functions"), { Hotkey(Key::L | Key::DPadRight, "Input Function Data"), Hotkey(Key::L | Key::DPadDown, "Call Function") })),
 		MISCCODES->Append(new MenuEntry(Color(MiscCodes) << "Fast Game Speed", fastgamespeed, "Speeds up your game.")),
 		menu->Append(MISCCODES);
 	}
 
 	int	main(void) {
-		PluginMenu *menu = new PluginMenu("ACHHD Vapecord Public Plugin", 1, 0, 1, "Creator: Lukas#4444.\nThanks to Kominost for the Walk Over Things! \nSpecial thanks: Fussels  \nDiscord: https://discord.gg/w9nvqjW");
+		PluginMenu *menu = new PluginMenu("ACHHD Vapecord Plugin " << GetRegionName(), 1, 1, 0, "Creator: Lukas#4444.\nThanks to Kominost for the Walk Over Things! \nDiscord: " + (std::string)DISCORD_LINK);
 		menu->SynchronizeWithFrame(true);
 		menu->Callback(ToolFix);
 		menu->Callback(UmbrellaSecretEquip);
 
 		LoadEntrys(menu);
-
-		Code::Load();
 
 		menu->Run();
 

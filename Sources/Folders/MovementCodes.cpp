@@ -1,18 +1,17 @@
 #include "cheats.hpp"
 
-namespace CTRPluginFramework
-{
-	//Made by Kominost!
+namespace CTRPluginFramework {
+//Made by Kominost!
 	void collisions(MenuEntry *entry) {
-		u32 WALK_OVER = Region::AutoRegion(0x4DB0F8, -1, -1);
+		static const u32 WALK_OVER = Region::AutoRegion(0x4DB0F8, 0x4DB0C4, -1);
 		if(Controller::IsKeysPressed(entry->Hotkeys[0].GetKeys())) {
 			switch(*(u32 *)WALK_OVER) {
 				case 0xE3A09001:
-					Process::Write32(WALK_OVER, 0xE3A09000);
+					Process::Patch(WALK_OVER, 0xE3A09000);
 					OSD::Notify("Walk Over Things " << Color::Green << "ON");
 				break;
 				case 0xE3A09000:
-					Process::Write32(WALK_OVER, 0xE3A09001);
+					Process::Patch(WALK_OVER, 0xE3A09001);
 					OSD::Notify("Walk Over Things " << Color::Red << "OFF");
 				break;
 			}
@@ -48,7 +47,7 @@ namespace CTRPluginFramework
 
 	void coordmod(MenuEntry *entry) {
 		if(entry->Hotkeys[0].IsDown()) {
-			volatile float *pCoords = (float *)GameHelper::GetCoordinates();
+			volatile float *pCoords = GameHelper::GetCoordinates();
 			if(pCoords != nullptr) {
 				if(entry->Hotkeys[1].IsDown()) 
 					*pCoords -= cspeed;

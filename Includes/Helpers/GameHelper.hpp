@@ -2,31 +2,24 @@
 #define GAMEHELPER_HPP
 
 #include "CTRPluginFramework.hpp"
+#include "Helpers/Wrapper.hpp"
 
-namespace CTRPluginFramework
-{
-	class GameHelper
-	{
-	public:
-		static std::string 	GetStageName(u8 stageID = 0);
-		static u32			GetTakumi();
-		static u32			GetPlayerData();
-		static u32			GetPlayerOffset();
-		static u32 			GetPInstance();
-		static u32			GetCurrentMap();
-		static u32 			*GetItemAtWorldCoords(u32 wX, u32 wY);
-		static u32			RoomChange(u8 room);
-		static bool 		Outside();
-		static u32	 		GetCoordinates();
-		static float 		*WorldCoordsToCoords(u8 wX, u8 wY, float res[3]);
-		static void 		DropItem(u32 *ItemID, u32 wX, u32 wY);
-		static u32			GetWorldCoords();
-	};
-	
-	class Region
-	{
-	public:
-		static int 			AutoRegion(u32 usa, u32 eur, u32 jpn);
-	};
+namespace CTRPluginFramework {
+	namespace GameHelper {
+		std::string 	GetStageName(u8 stageID = 0);
+		u32				GetTakumi();
+		u32				GetPlayerData();
+		u32				GetPlayerOffset();
+		u32 			GetPInstance();
+		u32				GetCurrentMap();
+		u8 				GetStageID();
+		u32 			*GetItemAtWorldCoords(Coord worldCoords);
+		u32				RoomChange(u8 room);
+		bool 			Outside();
+		float           *GetCoordinates();
+		float 			*WorldCoordsToCoords(Coord worldCoords, float res[3]);
+		void 			DropItem(u32 *ItemID, Coord worldCoords);
+		Coord			GetWorldCoords();
+	}
 }
 #endif

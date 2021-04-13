@@ -5,50 +5,41 @@
 #include <3ds.h>
 #include "Helpers/GameHelper.hpp"
 #include "Helpers/Animation.hpp"
+#include "Helpers/Wrapper.hpp"
+#include "Helpers/AnimData.hpp"
+#include "Helpers/Region.hpp" 
+
+#define PATH_SAVE "Save"
+#define DISCORD_LINK "https://discord.gg/QwqdBpKWf3"
+
+#define TITLEID_USA 0x000400000014F100
+#define TITLEID_EUR 0x000400000014F200
+#define TITLEID_JPN 0x000400000014F000
 	
-namespace CTRPluginFramework
-{		
-	using OnChangeCallback  = void(*)(Keyboard &keyboard, KeyboardEvent &event);
-	
-	extern vu32(*FUN)(...);
-	
-	//SaveCodes
+namespace CTRPluginFramework {
+//SaveCodes
 	void SaveSettings(MenuEntry *entry);
 	
-	//MovementCodes
+//MovementCodes
 	void collisions(MenuEntry *entry);
 	void roomwarp(MenuEntry *entry);
 	void coordspeed(MenuEntry *entry);
 	void coordmod(MenuEntry *entry);
 	
-	//AnimationCodes
+//AnimationCodes
 	void setanim(MenuEntry *entry);
 	void idle(MenuEntry *entry);
 	void NPCCode(MenuEntry *entry);
 	
-	//MiscCodes
+//MiscCodes
 	void debug(MenuEntry *entry);
 	void cameramove(MenuEntry *entry);
 	void Dropper(MenuEntry *entry);
 	void FunctionsCaller(MenuEntry *entry);
 	void fastgamespeed(MenuEntry *entry);
 	
-	//Unused For Now
+//Unused For Now
 	void playerchange(MenuEntry *entry);
-	
-	class Code
-	{
-	public:
-		
-		static void     Load(void);
-		static u32		ROOM_ID;
-	};
-
-	//Helper Keyboards
-	bool SetUpKB(const std::string &msg, bool hex, const int length, u64 &output, u64 def, OnChangeCallback cb = nullptr);
-	bool SetUpKB(const std::string &msg, bool hex, const int length, u32 &output, u32 def, OnChangeCallback cb = nullptr);
-	bool SetUpKB(const std::string &msg, bool hex, const int length, u16 &output, u16 def, OnChangeCallback cb = nullptr);
-	bool SetUpKB(const std::string &msg, bool hex, const int length, u8 &output, u8 def, OnChangeCallback cb = nullptr);
 }
 
 #endif

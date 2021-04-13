@@ -1,8 +1,6 @@
 #include "cheats.hpp"
-#include "Helpers/Animation.hpp"
 
-namespace CTRPluginFramework
-{ 
+namespace CTRPluginFramework {
 //336729B0, 769DC4
 //33673E28, 
 //3221 to 3277 tools 
@@ -25,7 +23,7 @@ namespace CTRPluginFramework
 //Get Current Animation	
 	u8 Animation::GetCurrentAnim() {
 		u32 player = GameHelper::GetPInstance();
-		//If player is not loaded return
+	//If player is not loaded return
 		if(player == 0)
 			return 0;
 		
@@ -34,118 +32,80 @@ namespace CTRPluginFramework
 //Get Current Snake	
 	u16 Animation::GetCurrentSnake() {
 		u32 player = GameHelper::GetPInstance();
-		//If player is not loaded return
+	//If player is not loaded return
 		if(player == 0)
 			return 0;
 		
 		return(*(u8 *)(player + 0x4CA));
 	}
-//Get Current Emotion
-	u8 Animation::GetCurrentEmotion() {
-		u32 player = GameHelper::GetPInstance();
-		//If player is not loaded return
-		if(player == 0)
-			return 0;
-		
-		return(*(u8 *)(player + 0x628));
-	}
 //Get Animation Instance
 	u32 Animation::GetAnimationInstance() {
 		u32 player = GameHelper::GetPInstance();
-		//If player is not loaded return
+	//If player is not loaded return
 		if(player == 0)
 			return 0;
-		//Return Animation Instance
-		Process::Write32((u32)&FUN, 0x4DDE0C);
-		return FUN(player);
+	//Return Animation Instance
+		static const u32 ANIM_INST = Region::AutoRegion(0x4DDE0C, 0x4DDDD8, -1);
+
+		static FUNCT func = FUNCT(ANIM_INST);
+		return func.Call<u32>(player);
 	}
 //Execute Animation	
 	u32 Animation::ExecuteAnimation(u8 animID, u32 animInstance) {
 		u32 player = GameHelper::GetPInstance();
-		//If player is not loaded return
+	//If player is not loaded return
 		if(player == 0)
 			return 0;
-		//If animation is not loaded return
+	//If animation is not loaded return
 		if(animInstance == 0)
 			return 0;
-		//Executes Animation
-		Process::Write32((u32)&FUN, 0x4D8960);
-		return FUN(player, animID, animInstance, 0);
+	//Executes Animation
+		static const u32 ANIM_FUN = Region::AutoRegion(0x4D8960, 0x4D892C, -1);
+		static FUNCT func = FUNCT(ANIM_FUN);
+		return func.Call<u32>(player, animID, animInstance, 0);
 	}
 //Animation Wrapper
 	bool Animation::AnimationWrapper(u8 animID, u8 emotion, u16 item, u16 snake, u16 sound) {
-		//Get player data
+	//Get player data
 		u32 player = GameHelper::GetPInstance();
-		//If player is not loaded return
+	//If player is not loaded return
 		if(player == 0)
 			return 0;
-		//Get Animation Data
-		u32 animInstance;
-		animInstance = Animation::GetAnimationInstance();
-		//If animation data is 0 return
+	//Get Animation Data
+		u32 animInstance = Animation::GetAnimationInstance();
+	//If animation data is 0 return
 		if(animInstance == 0)
 			return 0;
 
-		//Get World Coords
-		u32 wX = GameHelper::GetWorldCoords();
-		u32 wY = GameHelper::GetWorldCoords() + 4;
+		Coord worldCoords = GameHelper::GetWorldCoords();
 
-		/*float coords[3];
-		//Get Coordinates for animation
-		Process::Write32((u32)&pfunction02, 0x4A2488);
-		pfunction02(animInstance + 0x8, (u32)GameHelper::WorldCoordsToCoords(*(u8 *)wX, *(u8 *)wY, coords)); */
-
-		//emotion change
-		if(animID == 0x56) {
-			Process::Write8(animInstance + 0x1C, emotion);
-			Process::Write8(animInstance + 0x1D, 1);
-		}
-		//outfit change
-		else if(animID == 0x42) {
-			Process::Write32(animInstance + 0x1C, item);
-			Process::Write8(animInstance + 0x20, emotion);
-			Process::Write32(animInstance + 0x44, 0x02880000);
-		}
-		//hold item
-		else if(animID == 0x43) {
-			Process::Write16(animInstance + 0x1C, item & 0xFFFF);
-			Process::Write16(animInstance + 0x1E, (item >> 0x10) & 0xFFFF);
-			Process::Write8(animInstance + 0x20, 0x01);
-		}
-		//Snake :D
-		else if(animID == 0x5A) {
-			//Writes Snake to animation
-			Process::Write16(animInstance + 0x1C, snake & 0xFFF);
-			Process::Write16(animInstance + 0x1E, snake & 0xFFFF);
-			
-			Process::Write8(animInstance + 0x20, *(u8 *)(player + 0x6B));
-			Process::Write8(animInstance + 0x21, 1);
-			Process::Write8(animInstance + 0x22, 5);
-		}
-		//pick amiibo phone
-		else if(animID == 0x18 | animID == 0x12) {
-			Process::Write32(animInstance + 0x1C, *(u32 *)GameHelper::GetCoordinates());
-			Process::Write32(animInstance + 0x20, *(u32 *)(GameHelper::GetCoordinates() + 4));
-			Process::Write32(animInstance + 0x24, *(u32 *)(GameHelper::GetCoordinates() + 8));
-			Process::Write16(animInstance + 0x28, 0x8258);
-		}
-		else if(animID == 0x44) {
-			//this makes the player coords not change after the animation
-			Process::Write8(animInstance + 0x20, 1);
-			Process::Write8(animInstance + 0x21, 1);
-		}
-		//Sit down
-		else if(animID == 0x2D | animID == 0x2E) {	
-			Process::Write32(animInstance + 0x20, *(u32 *)GameHelper::GetCoordinates());
-			Process::Write32(animInstance + 0x24, *(u32 *)(GameHelper::GetCoordinates() + 4));
-			Process::Write32(animInstance + 0x28, *(u32 *)(GameHelper::GetCoordinates() + 8));
-			Process::Write8(animInstance + 0x1C, 2);
-		}
-		
-		//any other animation
-		else {
-			Process::Write8(animInstance + 0x1C, *(u8 *)wX);		
-			Process::Write8(animInstance + 0x1D, *(u8 *)wY);
+		switch(animID) {
+			case 0x56:
+				AnimData::Emotion_56(animInstance, emotion);
+			break;
+			case 0x42:
+				AnimData::OutfitChange_42(animInstance, emotion, item);
+			break;
+			case 0x43:
+				AnimData::HoldItem_43(animInstance, item);
+			break;
+			case 0x5A:
+				AnimData::Snake_5A(animInstance, player, snake);
+			break;
+			case 0x18:
+			case 0x12:
+				AnimData::PickAmiiboPhone_18_12(animInstance);
+			break;
+			case 0x44:
+				AnimData::Null_44(animInstance);
+			break;
+			case 0x2D:
+			case 0x2E:
+				AnimData::Sit_2D_2E(animInstance);
+			break;
+			default:
+				AnimData::Null_Default(animInstance, worldCoords);
+			break;
 		}
 		 
 		//Execute standard Animation

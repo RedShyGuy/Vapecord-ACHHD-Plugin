@@ -1,12 +1,11 @@
 #include "cheats.hpp"
 
-namespace CTRPluginFramework
-{
+namespace CTRPluginFramework {
 	void setanim(MenuEntry *entry) {
-		static u8 AnimID = 0x03;
-		static u8 EmoteID = 0x01;
-		static u16 ItemID = 0x0001;
-		static u16 SnakeID = 0x0001;
+		static u8 AnimID = 3;
+		static u8 EmoteID = 1;
+		static u16 ItemID = 1;
+		static u16 SnakeID = 1;
 		
 		static int mode = 0;
 		static int setmode = 0;
@@ -41,16 +40,16 @@ namespace CTRPluginFramework
 			switch(setmode) {
 				case 0: return;
 				case 1: {
-					SetUpKB("Enter Animation ID:", true, 2, AnimID, AnimID);
+					Wrap::KB<u8>("Enter Animation ID:", true, 2, AnimID, AnimID);
 				} break;
 				case 2: {
-					SetUpKB("Enter Emotion ID:", true, 2, EmoteID, EmoteID);
+					Wrap::KB<u8>("Enter Emotion ID:", true, 2, EmoteID, EmoteID);
 				} break;
 				case 3: {
-					SetUpKB("Enter Item ID:", true, 2, ItemID, ItemID);
+					Wrap::KB<u16>("Enter Item ID:", true, 4, ItemID, ItemID);
 				} break;
 				case 4: {
-					SetUpKB("Enter Snake ID:", true, 2, SnakeID, SnakeID);
+					Wrap::KB<u16>("Enter Snake ID:", true, 3, SnakeID, SnakeID);
 				} break;
 			}
 		}

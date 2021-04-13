@@ -1,36 +1,31 @@
 #include "cheats.hpp"
-#include "Helpers/GameHelper.hpp"
 
 //0x739814 is 7FFE Pointer
 
-namespace CTRPluginFramework
-{
-	const u64 USA = 0x000400000014F100; 
-	const u64 EUR = 0x000400000014F200;
-	const u64 JPN = 0x000400000014F000;
-//Auto Region	
-	int Region::AutoRegion(u32 usa, u32 eur, u32 jpn) {
-		switch(Process::GetTitleID()) {
-			default: return(usa);
-			case USA: return(usa);
-			case EUR: return(eur);
-			case JPN: return(jpn);
-		}
-	}
+namespace CTRPluginFramework {
 //Get room name
 	std::string GameHelper::GetStageName(u8 stageID) {
-		Process::Write32((u32)&FUN, 0x496FA8);
-		return (std::string)((char *)FUN(stageID));
+		static const u32 STAGE_FUN = Region::AutoRegion(0x496FA8, 0x496E90, -1);
+		static FUNCT func = FUNCT(STAGE_FUN);
+		return (std::string)func.Call<char *>(stageID);
 	}
 //get takumi
 	u32 GameHelper::GetTakumi() {
-		Process::Write32((u32)&FUN, 0x4A0554);
-		return FUN();
+		static const u32 TAKUMI_FUN = Region::AutoRegion(0x4A0554, 0x4A043C, -1);
+		static FUNCT func = FUNCT(TAKUMI_FUN);
+		return func.Call<u32>();
+	}
+
+	u8 GameHelper::GetStageID() {
+		static const u32 ROOMID = Region::AutoRegion(0x496B20, 0x496A08, -1);
+		static FUNCT func = FUNCT(ROOMID);
+		return func.Call<u8>();
 	}
 //get player offset
 	u32 GameHelper::GetPlayerOffset() {
-		Process::Write32((u32)&FUN, 0x4A07B8);
-		return FUN();
+		static const u32 PLAYER_ADDRESS = Region::AutoRegion(0x4A07B8, 0x4A06A0, -1);
+		static FUNCT func = FUNCT(PLAYER_ADDRESS);
+		return func.Call<u32>();
 	}
 //get player start
 	u32 GameHelper::GetPlayerData() {
@@ -39,69 +34,73 @@ namespace CTRPluginFramework
 		return p;
 	}
 //Get Coords
-	u32 GameHelper::GetCoordinates() {
+	float *GameHelper::GetCoordinates() {
 		u32 i = GameHelper::GetPInstance();
 		if(i == 0) 
 			return 0;
 		
-		Process::Write32((u32)&FUN, 0x49D5C0);
-		
-		return FUN(1);;
+		static const u32 P_COORD = Region::AutoRegion(0x49D5C0, 0x49D4A8, -1);
+		static FUNCT func = FUNCT(P_COORD);
+		return func.Call<float *>(1);
 	}
 //get world coords
-	u32 GameHelper::GetWorldCoords() {
+	Coord GameHelper::GetWorldCoords() {
 		u32 i = GameHelper::GetPInstance();
 		if(i == 0) 
-			return 0;
+			return (Coord){ 0, 0 };
 		
 		i += 0x59C;	
 		
-		return i;
+		return *(Coord *)i;
 	}
 //Get current map	
 	u32 GameHelper::GetCurrentMap() {
-		Process::Write32((u32)&FUN, 0x50B1F8);
-		return FUN();
+		static const u32 MAP = Region::AutoRegion(0x50B1F8, 0x50B1C4, -1);
+		static FUNCT func = FUNCT(MAP);
+		return func.Call<u32>();
 	}
 //get item at world coords
-	u32 *GameHelper::GetItemAtWorldCoords(u32 wX, u32 wY) {
-		Process::Write32((u32)&FUN, 0x57C890);
-		return (u32 *)FUN(GameHelper::GetCurrentMap(), wX, wY, 0);
+	u32 *GameHelper::GetItemAtWorldCoords(Coord worldCoords) {
+		static const u32 ITEMWORLD = Region::AutoRegion(0x57C890, 0x57C860, -1);
+		static FUNCT func = FUNCT(ITEMWORLD);
+		return func.Call<u32 *>(GameHelper::GetCurrentMap(), worldCoords.wX, worldCoords.wY, 0);
 	}
 //drop function
-	void GameHelper::DropItem(u32 *ItemID, u32 wX, u32 wY) {
+	void GameHelper::DropItem(u32 *ItemID, Coord worldCoords) {
 		u32 i = GameHelper::GetPInstance();
 		if(i == 0) 
 			return;
 
-		Process::Write32((u32)&FUN, 0x480BDC);
-		FUN((u32)ItemID, wX, wY, 0);
+		static const u32 DROP_FUN = Region::AutoRegion(0x480BDC, 0x480AC4, -1);
+		static FUNCT func = FUNCT(DROP_FUN);
+		func.Call<void>(ItemID, worldCoords.wX, worldCoords.wY, 0);
 	}
 //Converts world coords to coords
-	float *GameHelper::WorldCoordsToCoords(u8 wX, u8 wY, float res[3]) {
+	float *GameHelper::WorldCoordsToCoords(Coord worldCoords, float res[3]) {
 		volatile float *coords = (float *)GameHelper::GetCoordinates();
 		if(coords != nullptr) 
 			res[1] = *(volatile float *)((u32)coords + 4);
 		
-		res[0] = (float)(wX * 0x20 + 0x10);
-		res[2] = (float)(wY * 0x20 + 0x10);
+		res[0] = (float)(worldCoords.wX * 0x20 + 0x10);
+		res[2] = (float)(worldCoords.wY * 0x20 + 0x10);
 		return &res[0];
 	}
 //If outside
 	bool GameHelper::Outside() {
-		if(*(u32 *)0x33672A00 != 0) 
-			return false;
-
-		return true;
+		static const u32 OUTSIDE = Region::AutoRegion(0x497620, 0x497508, -1);
+		static FUNCT func = FUNCT(OUTSIDE);
+		return func.Call<bool>(2, GameHelper::GetStageID());
 	}
-//Call Room Change Function	
+//Call Room Change Function
 	u32 GameHelper::RoomChange(u8 room) {
-		Process::Write32((u32)&FUN, 0x496F5C);
-		return FUN(room, 1, 1, 0);
+		static const u32 ROOM_FUNC = Region::AutoRegion(0x496F5C, 0x496E44, -1);
+		static FUNCT func = FUNCT(ROOM_FUNC);
+		return func.Call<u32>(room, 1, 1, 0);
 	}
-//Get Player Instance	
+//Get Player Instance
 	u32 GameHelper::GetPInstance() {
-		Process::Write32((u32)&FUN, 0x49DA08);
-		return FUN(0, 1);
+		static const u32 P_INSTANCE = Region::AutoRegion(0x49DA08, 0x49D8F0, -1);
+		static FUNCT func = FUNCT(P_INSTANCE);
+		return func.Call<u32>(0, 1);
 	}
 }
