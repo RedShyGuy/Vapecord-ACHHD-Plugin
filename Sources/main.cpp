@@ -26,7 +26,7 @@ namespace CTRPluginFramework {
         return (entry);
     }
 
-	const Color PressedButton(0x505050A0);
+	static constexpr Color PressedButton(0x505050A0);
 	
 	void PatchProcess(FwkSettings &settings) {
 		//OPTIONS
@@ -101,11 +101,11 @@ namespace CTRPluginFramework {
 		Animation::AnimationWrapper(0x43, 0, 0x3277, 0, 0);
 	}
 	
-	static const Color SaveCodes(0xFF0033FF);
-	static const Color MovementCodes(0xFF0033FF);
-	static const Color PlayerCodes(0xFF0033FF);
-	static const Color AnimationCodes(0xFF0033FF);
-	static const Color MiscCodes(0xFF0033FF);
+	static constexpr Color SaveCodes(0xFF0033FF);
+	static constexpr Color MovementCodes(0xFF0033FF);
+	static constexpr Color PlayerCodes(0xFF0033FF);
+	static constexpr Color AnimationCodes(0xFF0033FF);
+	static constexpr Color MiscCodes(0xFF0033FF);
 
 	MenuFolder *SAVECODES;
 	MenuFolder *MOVECODES;
