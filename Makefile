@@ -1,38 +1,53 @@
+#---------------------------------------------------------------------------------
 .SUFFIXES:
+#---------------------------------------------------------------------------------
 
 ifeq ($(strip $(DEVKITARM)),)
 $(error "Please set DEVKITARM in your environment. export DEVKITARM=<path to>devkitARM")
 endif
 
-TOPDIR 		?= 	$(CURDIR)
+export TOPDIR ?= $(CURDIR)
 include $(DEVKITARM)/3ds_rules
 
-CTRPFLIB	?=	$(DEVKITPRO)/libctrpf
+CTRPFLIB	?=	$(DEVKITPRO)/libctrpfforvapecord
 
-TARGET		:= 	$(notdir $(CURDIR))
-PLGINFO 	:= 	CTRPluginFramework.plgInfo
+TARGET		:= 	Vapecord-ACHHD-Plugin
 
 BUILD		:= 	Build
-INCLUDES	:= 	Includes
-SOURCES 	:= 	Sources \
-                Sources/Folders \
-				Sources/Folders/SeedingCodes \
-				Sources/Helpers \
-				Sources/Helpers/Personal \
-				Sources/Helpers/Other \
-				Sources/Plugin
-				
+INCLUDES	:= 	include \
+				include/core \
+				include/platform/ctrpf \
+				include/core/game_api \
+				include/core/checks \
+				include/core/infrastructure \
+
+SOURCES 	:= 	src \
+                src/features \
+				src/core \
+				src/core/game_api \
+				src/core/checks \
+				src/core/infrastructure \
+				src/platform/ctrpf \
+				src/platform \
+
+PSF 		:= 	$(notdir $(TOPDIR)).plgInfo
+
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
+DEVMODE 	?= 1
+
 ARCH		:=	-march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft
 
+FALSEPOSITIVES := -Wno-array-bounds -Wno-stringop-overflow -Wno-stringop-overread
+
 CFLAGS		:=	$(ARCH) -Os -mword-relocations \
-				-fomit-frame-pointer -ffunction-sections -fno-strict-aliasing
+				-fomit-frame-pointer -ffunction-sections -fno-strict-aliasing \
+				$(FALSEPOSITIVES)
 
-CFLAGS		+=	$(INCLUDE) -DARM11 -D_3DS 
+CFLAGS		+=	$(INCLUDE) -D__3DS__
 
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++20 -DDEVMODE=$(DEVMODE)
 
 ASFLAGS		:=	$(ARCH)
 LDFLAGS		:= -T $(TOPDIR)/3gx.ld $(ARCH) -Os -Wl,--gc-sections,--strip-discarded,--strip-debug
@@ -46,7 +61,6 @@ LIBDIRS		:= 	$(CTRPFLIB) $(CTRULIB) $(PORTLIBS)
 #---------------------------------------------------------------------------------
 ifneq ($(BUILD),$(notdir $(CURDIR)))
 #---------------------------------------------------------------------------------
-
 export OUTPUT	:=	$(CURDIR)/$(TARGET)
 export TOPDIR	:=	$(CURDIR)
 export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
@@ -66,7 +80,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I $(CURDIR)/$(dir) ) \
 
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L $(dir)/lib)
 
-.PHONY: $(BUILD) clean all
+.PHONY: $(BUILD) clean all check-address
 
 #---------------------------------------------------------------------------------
 all: $(BUILD)
@@ -77,24 +91,34 @@ $(BUILD):
 
 #---------------------------------------------------------------------------------
 clean:
-	@echo clean ... 
+	@echo clean ...
 	@rm -fr $(BUILD) $(OUTPUT).3gx $(OUTPUT).elf
 
 re: clean all
 
 #---------------------------------------------------------------------------------
 
-else
+relink:
+	@rm -f *.elf *.3gx
+	@$(MAKE)
 
-DEPENDS	:=	$(OFILES:.o=.d)
+check-address:
+	@python3 $(CURDIR)/tools/check_no_global_address.py || python $(CURDIR)/tools/check_no_global_address.py
+
+#---------------------------------------------------------------------------------
+
+else
 
 #---------------------------------------------------------------------------------
 # main targets
 #---------------------------------------------------------------------------------
+
+DEPENDS	:=	$(OFILES:.o=.d)
+
+
 $(OUTPUT).3gx : $(OUTPUT).elf
 
 $(OUTPUT).elf : $(OFILES)
-
 #---------------------------------------------------------------------------------
 # you need a rule like this for each extension you use as binary data
 #---------------------------------------------------------------------------------
@@ -105,11 +129,11 @@ $(OUTPUT).elf : $(OFILES)
 
 #---------------------------------------------------------------------------------
 %.3gx: %.elf
-#---------------------------------------------------------------------------------
 	@echo creating $(notdir $@)
-	@3gxtool -s -d $(word 1, $^) $(TOPDIR)/$(PLGINFO) $@
+	@3gxtool -s -d $^ $(TOPDIR)/$(PSF) $@
 
 -include $(DEPENDS)
 
-#---------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------
 endif
+#---------------------------------------------------------------------------------------

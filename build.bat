@@ -1,5 +1,5 @@
 @echo off
 cls
-make clean
-make -j 8
+
+make DEVMODE=1 -j 8
 pause
