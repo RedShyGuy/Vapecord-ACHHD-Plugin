@@ -9,6 +9,10 @@ namespace CTRPluginFramework {
 			u32 wY;
 		};
 
+		/*
+		0x49C984 setHairStyle(u8 hairStyleId);
+		*/
+
 		bool				IsRoomLoading();
 		u32					GetTakumi();
 		u32					GetPlayerData();

@@ -2,8 +2,6 @@
 #include "core/infrastructure/SaveBackupManager.hpp"
 #include "core/infrastructure/Language.hpp"
 
-#define SAVESIZE 0x2BE930
-
 namespace CTRPluginFramework {
 	void SaveSettings(MenuEntry *entry) {
 		const Language *lang = Language::getInstance();
