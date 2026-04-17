@@ -33,11 +33,6 @@ namespace CTRPluginFramework {
             return TextID::NONE;
 
         switch (parent) {
-            case FolderType::Player:
-                if (sub == SubFolder::PlayerSave)
-                    return TextID::PLAYER_SAVE_CODES;
-                break;
-
             default:
                 break;
         }
@@ -50,11 +45,6 @@ namespace CTRPluginFramework {
             return TextID::NONE;
 
         switch (parent) {
-            case FolderType::Player:
-                if (sub == SubFolder::PlayerSave)
-                    return TextID::PLAYER_SAVE_CODES_NOTE;
-                break;
-
             default:
                 break;
         }

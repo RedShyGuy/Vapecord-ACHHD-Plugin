@@ -4,14 +4,40 @@
 //0x739814 is 7FFE Pointer
 
 namespace CTRPluginFramework {
+	void Game::AppearanceUpdate() {
+		u32 i = Game::GetAcPlayerInstance();
+		if(i == 0) {
+			return;
+		}
+		
+		static Address appearanceUpdate(0x4F02FC);
+		appearanceUpdate.Call<void>(i, 0);
+	}
+
 	bool Game::IsRoomLoading() {
 		static const Address LoadCheck(0x73358A);
 		return *(bool *)LoadCheck.addr;
 	}
 
-	u32 Game::GetTakumi() {
+	TakumiData* Game::GetTakumiSaveData() {
 		static Address takumiFunc(0x4A0554);
-		return takumiFunc.Call<u32>();
+		return takumiFunc.Call<TakumiData*>();
+	}
+
+	ACHHD_Data*	Game::GetSaveData() {
+		TakumiData* tData = GetTakumiSaveData();
+		if(!tData) {
+			return nullptr;
+		}
+		return &tData->data;
+	}
+
+	ACHHD_Player* Game::GetPlayerSaveData() {
+		ACHHD_Data* data = GetSaveData();
+		if(!data) {
+			return nullptr;
+		}
+		return &data->player;
 	}
 
 	u8 Game::GetStageID() {
@@ -19,19 +45,8 @@ namespace CTRPluginFramework {
 		return roomId.Call<u8>();
 	}
 
-	u32 Game::GetPlayerOffset() {
-		static Address playerOffset(0x4A07B8);
-		return playerOffset.Call<u32>();
-	}
-
-	u32 Game::GetPlayerData() {
-		u32 p = Game::GetPlayerOffset();
-		p += 0x1BFA88;
-		return p;
-	}
-
 	float *Game::GetCoordinates() {
-		u32 i = Game::GetPInstance();
+		u32 i = Game::GetAcPlayerInstance();
 		if(i == 0) 
 			return 0;
 		
@@ -41,7 +56,7 @@ namespace CTRPluginFramework {
 
 
 	Game::WorldCoord Game::GetWorldCoords() {
-		u32 i = Game::GetPInstance();
+		u32 i = Game::GetAcPlayerInstance();
 		if(i == 0) 
 			return (WorldCoord){ 0, 0 };
 		
@@ -61,7 +76,7 @@ namespace CTRPluginFramework {
 	}
 
 	void Game::DropItem(u32 *ItemID, Game::WorldCoord worldCoords) {
-		u32 i = Game::GetPInstance();
+		u32 i = Game::GetAcPlayerInstance();
 		if(i == 0) 
 			return;
 
@@ -89,7 +104,7 @@ namespace CTRPluginFramework {
 		return roomFunc.Call<u32>(room, 1, 1, 0);
 	}
 
-	u32 Game::GetPInstance() {
+	u32 Game::GetAcPlayerInstance() {
 		static Address pInstance(0x49DA08);
 		return pInstance.Call<u32>(0, 1);
 	}

@@ -55,7 +55,7 @@ namespace CTRPluginFramework {
 
     void ToolFix(void) {
 		//this here gives the umbrella 0x3277 the correct data and lets the player use it correctly
-		u32 i = Game::GetPInstance();
+		u32 i = Game::GetAcPlayerInstance();
 		if(i == 0)
 			return;
 		
@@ -80,7 +80,7 @@ namespace CTRPluginFramework {
 		if(Game::GetStageID() != 0xA)
 			return;
 		
-		u32 i = Game::GetPInstance();
+		u32 i = Game::GetAcPlayerInstance();
 		if(i == 0)
 			return;
 		

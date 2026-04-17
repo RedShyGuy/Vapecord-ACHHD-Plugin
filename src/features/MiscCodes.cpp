@@ -6,7 +6,7 @@
 
 namespace CTRPluginFramework {
 	bool debugOSD(const Screen &screen) {
-		if(Game::GetPInstance() == 0) 
+		if(Game::GetAcPlayerInstance() == 0) 
 			return 0;
 		
 		volatile float *pCoords = Game::GetCoordinates();
@@ -33,7 +33,7 @@ namespace CTRPluginFramework {
 	}
 	
 	void Dropper(MenuEntry *entry) {
-		if(Game::GetPInstance() == 0) 
+		if(Game::GetAcPlayerInstance() == 0) 
 			return;
 		
 		static u32 ItemID = 0x7FFE;
@@ -49,75 +49,8 @@ namespace CTRPluginFramework {
 		}
 	}
 
-	static bool Turbo_Call = false;
-
-	void FunctionsCaller(MenuEntry *entry) {
-		static u32 funcaddress;
-		static u32 p[11];
-		u32 result;
-		static int size;
-
-        if (Controller::IsKeysPressed(entry->Hotkeys[0].GetKeys())) {
-			if (PluginUtils::Input::PromptNumber<u32>({ "Enter address of function:", true, 8, funcaddress, nullptr }, funcaddress)) {
-				Keyboard KB("Enter ID:");
-				KB.SetMaxLength(8);
-				KB.IsHexadecimal(true);
-				for (int i = 0; i < 12; i++) {
-					Sleep(Milliseconds(100));
-					KB.GetMessage() = "Enter value for param " << std::to_string(i) << ":" << 
-					"\n" << Color::Blue << "0x11111111 for player instance" << 
-					"\n" << Color::Red << "0x22222222 for animation instance" << 
-					"\n" << Color::Green << "0x33333333 for map offset";
-					
-					if (KB.Open(p[i]) == -1) {
-						size = i--;
-						OSD::Notify(Utils::Format("Set Function: %08X with %02d parameters!" , funcaddress, size));
-						return;
-					}
-
-					switch (p[i]) {
-						case 0x11111111: 
-							p[i] = Game::GetPlayerOffset();
-						break;
-
-						case 0x22222222:
-							p[i] = Animation::GetAnimationInstance();
-						break;
-
-						case 0x33333333:
-							p[i] = Game::GetCurrentMap();
-						break;
-					}
-				}	
-			}
-        }
-
-		if (Turbo_Call ? Controller::IsKeysDown(entry->Hotkeys[1].GetKeys()) : Controller::IsKeysPressed(entry->Hotkeys[1].GetKeys())) {
-			if (!Process::CheckAddress(funcaddress))
-				return;
-
-			Sleep(Milliseconds(100));
-			static Address func(funcaddress);
-			switch (size) {
-				case 0: result = func.Call<u32>(); break;
-				case 1: result = func.Call<u32>(p[0]); break;
-				case 2: result = func.Call<u32>(p[0], p[1]); break;
-				case 3: result = func.Call<u32>(p[0], p[1], p[2]); break;
-				case 4: result = func.Call<u32>(p[0], p[1], p[2], p[3]); break;
-				case 5: result = func.Call<u32>(p[0], p[1], p[2], p[3], p[4]); break;
-				case 6: result = func.Call<u32>(p[0], p[1], p[2], p[3], p[4], p[5]); break;
-				case 7: result = func.Call<u32>(p[0], p[1], p[2], p[3], p[4], p[5], p[6]); break;
-				case 8: result = func.Call<u32>(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7]); break;
-				case 9: result = func.Call<u32>(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8]); break;
-				case 10: result = func.Call<u32>(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9]); break;
-				case 11: result = func.Call<u32>(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9], p[10]); break;
-			}
-			OSD::Notify(Utils::Format("Returned Value: %08X", result));
-		}
-    }
-
 	void unlockshops(MenuEntry *entry) {
-		u32 p = Game::GetPlayerOffset();
+		//u32 p = Game::GetPlayerOffset();
 		//Main Street
 		//School = 	 p + 0x1B4D80
 		//Hospital = p + 0x1B5EB8

@@ -10,11 +10,11 @@ namespace CTRPluginFramework {
 		if(Controller::IsKeysPressed(entry->Hotkeys[0].GetKeys())) {
 			if (walkOver.IsPatched()) {
 				walkOver.Unpatch();
-				OSD::Notify("Walk Over Things " << Color::Red << "OFF");
+				OSD::NotifySysFont("Walk Over Things " << Color::Red << "OFF");
 			}
 			else {
 				walkOver.Patch(0xE3A09000);
-				OSD::Notify("Walk Over Things " << Color::Green << "ON");
+				OSD::NotifySysFont("Walk Over Things " << Color::Green << "ON");
 			}
 		}
 	}

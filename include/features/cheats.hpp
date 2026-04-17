@@ -1,5 +1,4 @@
-#ifndef CHEATS_H
-#define CHEATS_H
+#pragma once
 
 #include <CTRPluginFramework.hpp>
 #include <3ds.h>
@@ -7,6 +6,9 @@
 namespace CTRPluginFramework {
 //SaveCodes
 	void SaveSettings(MenuEntry *entry);
+	void UnlockAllHappyHomeHandbookLessons(MenuEntry *entry);
+	void NameEditor(MenuEntry *entry);
+	void AppearanceEditor(MenuEntry *entry);
 	
 //MovementCodes
 	void collisions(MenuEntry *entry);
@@ -23,13 +25,17 @@ namespace CTRPluginFramework {
 	void debug(MenuEntry *entry);
 	void cameramove(MenuEntry *entry);
 	void Dropper(MenuEntry *entry);
-	void FunctionsCaller(MenuEntry *entry);
 	void fastgamespeed(MenuEntry *entry);
+	void AmiiboSpoofer(MenuEntry *entry);
+
+//DevCodes
+	void FunctionsCaller(MenuEntry *entry);
+	void PlayerFlagsMonitor(MenuEntry* entry);
+	void SetPlayerFlags(MenuEntry *entry);
+	void TestEntry(MenuEntry *entry);
 	
 //Unused For Now
 	void playerchange(MenuEntry *entry);
 
 	void pluginSettingsEntry(MenuEntry *entry);
 }
-
-#endif

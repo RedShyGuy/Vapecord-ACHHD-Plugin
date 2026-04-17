@@ -3,9 +3,10 @@
 #include <CTRPluginFramework.hpp>
 #include "core/game_api/Item.hpp"
 
+#define SAVESIZE 0x2BE940
+
 #pragma pack(push, 1)
 
-typedef char16_t wchar; ///< Wide character type
 using EncVal = u64;
 
 /*
@@ -14,16 +15,14 @@ They get calculated not by checking the elapsed time since 01.01.1970, but since
 */
 using Nanoseconds = u64;
 
-#define SAVESIZE 0x2BE940
-
 namespace CTRPluginFramework {
 
     //4a0a48 might be save constructor
     //or 04a059c, looks more promising
 
-    struct PlayerID { //0x16
+    struct PlayerID { //0x16 //0x326A7490
         u16 PID;
-        wchar PlayerName[9];
+        char16_t PlayerName[9];
         u8 Gender;
         u8 ZeroPad;
 
@@ -46,7 +45,7 @@ namespace CTRPluginFramework {
 
     struct TownID { //0x16
         u16 TID; //Default is 0
-        wchar DataTownName[9]; //Default is 0
+        char16_t DataTownName[9]; //Default is 0
         u8 Unknown01; //Default is 0xA
         u8 Unknown02;
 
@@ -82,7 +81,7 @@ namespace CTRPluginFramework {
     };
 
     struct ACHHD_Pattern { //Size: 0x870
-        wchar Title[21];
+        char16_t Title[21];
         PersonalID CreatorData;
         u8 Palette[15];
         u8 UnusedChecksum = 1; //changing seems to have no effect //Default: 1, Set at 0x1B4F74 EUR 1.5
@@ -157,7 +156,9 @@ namespace CTRPluginFramework {
 		0x46, 0x47, 0x48, 0x4A
 	};
 
+    //0x16
     struct Player_Flags {
+    //Offset: 0x326A74A6
         u8 unkFlag1 : 1; //0x01
         u8 unkFlag2 : 1; //0x02
         u8 unkFlag3 : 1; //0x04
@@ -165,71 +166,71 @@ namespace CTRPluginFramework {
         u8 unkFlag5 : 1; //0x10
         u8 unkFlag6 : 1; //0x20
         u8 unkFlag7 : 1; //0x40
-        u8 unkFlag8 : 1; //0x80
-
-        u8 unkFlag9 : 1; //0x01
+        u8 unkFlag8 : 1; //0x80 //set to 1 after finishing first client
+    //Offset: 0x326A74A7
+        u8 unkFlag9 : 1; //0x01 //maybe furniture tutorial finished? after slideshow
         u8 unkFlag10 : 1; //0x02
         u8 unkFlag11 : 1; //0x04
         u8 unkFlag12 : 1; //0x08
-        u8 unkFlag13 : 1; //0x10
+        u8 unkFlag13 : 1; //0x10 //daily report introduction
         u8 unkFlag14 : 1; //0x20
         u8 unkFlag15 : 1; //0x40
         u8 unkFlag16 : 1; //0x80
-
-        u8 unkFlag17 : 1; //0x01
-        u8 unkFlag18 : 1; //0x02
+    //Offset: 0x326A74A8
+        u8 unkFlag17 : 1; //0x01 //maybe furniture tutorial finished? when talking to lottie after tutorial
+        u8 unkFlag18 : 1; //0x02 //house finished? (goes back to 0 after leaving the house)
         u8 unkFlag19 : 1; //0x04
         u8 unkFlag20 : 1; //0x08
         u8 unkFlag21 : 1; //0x10
         u8 unkFlag22 : 1; //0x20
         u8 unkFlag23 : 1; //0x40
         u8 unkFlag24 : 1; //0x80
-
+    //Offset: 0x326A74A9
         u8 unkFlag25 : 1; //0x01
-        u8 unkFlag26 : 1; //0x02
-        u8 unkFlag27 : 1; //0x04
-        u8 unkFlag28 : 1; //0x08
-        u8 unkFlag29 : 1; //0x10
-        u8 unkFlag30 : 1; //0x20
-        u8 unkFlag31 : 1; //0x40
+        u8 unkFlag26 : 1; //0x02 //maybe trash can or rotate or client info
+        u8 unkFlag27 : 1; //0x04 //probably unlocked leaf icon (furniture list)
+        u8 unkFlag28 : 1; //0x08 //maybe trash can or rotate or client info
+        u8 unkFlag29 : 1; //0x10 //unlocked wall decorations icon
+        u8 unkFlag30 : 1; //0x20 //unlocked wallpaper/floors icon
+        u8 unkFlag31 : 1; //0x40 //search items icon
         u8 unkFlag32 : 1; //0x80
-
+    //Offset: 0x326A74AA
         u8 unkFlag33 : 1; //0x01
         u8 unkFlag34 : 1; //0x02
         u8 unkFlag35 : 1; //0x04
-        u8 unkFlag36 : 1; //0x08
+        u8 unkFlag36 : 1; //0x08 //unlocked rugs icon
         u8 unkFlag37 : 1; //0x10
         u8 unkFlag38 : 1; //0x20
-        u8 unkFlag39 : 1; //0x40
+        u8 InviteAmiiboToClientIntroduction : 1; //0x40
         u8 unkFlag40 : 1; //0x80
-
+    //Offset: 0x326A74AB
         u8 unkFlag41 : 1; //0x01
         u8 unkFlag42 : 1; //0x02
         u8 unkFlag43 : 1; //0x04
         u8 unkFlag44 : 1; //0x08
-        u8 unkFlag45 : 1; //0x10
+        u8 unkFlag45 : 1; //0x10 //set to 1 after arriving in office after first client
         u8 unkFlag46 : 1; //0x20
         u8 unkFlag47 : 1; //0x40
         u8 unkFlag48 : 1; //0x80
-
+    //Offset: 0x326A74AC
         u8 unkFlag49 : 1; //0x01
         u8 unkFlag50 : 1; //0x02
         u8 unkFlag51 : 1; //0x04
-        u8 unkFlag52 : 1; //0x08
-        u8 unkFlag53 : 1; //0x10
+        u8 ClientListUnlocked : 1; //0x08
+        u8 unkFlag53 : 1; //0x10 //visited client?
         u8 unkFlag54 : 1; //0x20
-        u8 unkFlag55 : 1; //0x40
-        u8 unkFlag56 : 1; //0x80
-
+        u8 unkFlag55 : 1; //0x40 //after lyle tells you to go outside and talk to possible clients
+        u8 unkFlag56 : 1; //0x80 //set to 1 after finishing second client
+    //Offset: 0x326A74AD
         u8 unkFlag57 : 1; //0x01
-        u8 unkFlag58 : 1; //0x02
+        u8 unkFlag58 : 1; //0x02 //set to 1 after finishing first&second client (0 when day is over)
         u8 unkFlag59 : 1; //0x04
         u8 unkFlag60 : 1; //0x08
         u8 unkFlag61 : 1; //0x10
         u8 unkFlag62 : 1; //0x20
         u8 unkFlag63 : 1; //0x40
         u8 unkFlag64 : 1; //0x80
-
+    //Offset: 0x326A74AE
         u8 unkFlag65 : 1; //0x01
         u8 unkFlag66 : 1; //0x02
         u8 unkFlag67 : 1; //0x04
@@ -238,34 +239,34 @@ namespace CTRPluginFramework {
         u8 unkFlag70 : 1; //0x20
         u8 unkFlag71 : 1; //0x40
         u8 unkFlag72 : 1; //0x80
-
-        u8 unkFlag73 : 1; //0x01
-        u8 unkFlag74 : 1; //0x02
+    //Offset: 0x326A74AF
+        u8 GameplayDataSettingsIntroduction : 1; //0x01
+        u8 SendGameplayData : 1; //0x02
         u8 unkFlag75 : 1; //0x04
         u8 unkFlag76 : 1; //0x08
-        u8 unkFlag77 : 1; //0x10
-        u8 unkFlag78 : 1; //0x20
-        u8 unkFlag79 : 1; //0x40
-        u8 unkFlag80 : 1; //0x80
-
-        u8 unkFlag81 : 1; //0x01
-        u8 SoundSceneryUnlocked : 1; //0x02
-        u8 RefurbishingUnlocked : 1; //0x04
-        u8 HappyHomeCameraUnlocked : 1; //0x08
-        u8 WorldInsectsUnlocked : 1; //0x10
-        u8 WorldFishUnlocked : 1; //0x20
-        u8 AncientFossilsUnlocked : 1; //0x40
-        u8 GyroidsUnlocked : 1; //0x80
-
-        u8 ArtCollectionUnlocked : 1; //0x01
-        u8 unkFlag90 : 1; //0x02
-        u8 StylingMachineUnlocked : 1; //0x04
+        u8 unkFlag77 : 1; //0x10 //Maybe has study book unlocked? (Ceiling Decor & Refurbishing unlocked)
+        u8 CustomDesignsUnlocked : 1; //0x20
+        u8 EvenMoreDesignsUnlocked : 1; //0x40
+        u8 WindowsAndMoreUnlocked : 1; //0x80
+    //Offset: 0x326A74B0
+        u8 SoundSceneryUnlocked : 1; //0x01
+        u8 RefurbishingUnlocked : 1; //0x02
+        u8 HappyHomeCameraUnlocked : 1; //0x04
+        u8 WorldInsectsUnlocked : 1; //0x08
+        u8 WorldFishUnlocked : 1; //0x10
+        u8 AncientFossilsUnlocked : 1; //0x20
+        u8 GyroidsUnlocked : 1; //0x40
+        u8 ArtCollectionUnlocked : 1; //0x80
+    //Offset: 0x326A74B1
+        u8 unkFlag89 : 1; //0x01
+        u8 StylingMachineUnlocked : 1; //0x02
+        u8 unkFlag91 : 1; //0x04
         u8 unkFlag92 : 1; //0x08
         u8 unkFlag93 : 1; //0x10
-        u8 unkFlag94 : 1; //0x20
+        u8 unkFlag94 : 1; //0x20 //second day over?
         u8 unkFlag95 : 1; //0x40
         u8 unkFlag96 : 1; //0x80
-
+    //Offset: 0x326A74B2
         u8 unkFlag97 : 1; //0x01
         u8 unkFlag98 : 1; //0x02
         u8 unkFlag99 : 1; //0x04
@@ -274,7 +275,7 @@ namespace CTRPluginFramework {
         u8 unkFlag102 : 1; //0x20
         u8 unkFlag103 : 1; //0x40
         u8 unkFlag104 : 1; //0x80
-
+    //Offset: 0x326A74B3
         u8 unkFlag105 : 1; //0x01
         u8 unkFlag106 : 1; //0x02
         u8 unkFlag107 : 1; //0x04
@@ -283,7 +284,7 @@ namespace CTRPluginFramework {
         u8 unkFlag110 : 1; //0x20
         u8 unkFlag111 : 1; //0x40
         u8 unkFlag112 : 1; //0x80
-
+    //Offset: 0x326A74B4
         u8 unkFlag113 : 1; //0x01
         u8 unkFlag114 : 1; //0x02
         u8 unkFlag115 : 1; //0x04
@@ -292,7 +293,7 @@ namespace CTRPluginFramework {
         u8 unkFlag118 : 1; //0x20
         u8 unkFlag119 : 1; //0x40
         u8 unkFlag120 : 1; //0x80
-
+    //Offset: 0x326A74B5
         u8 unkFlag121 : 1; //0x01
         u8 unkFlag122 : 1; //0x02
         u8 unkFlag123 : 1; //0x04
@@ -301,7 +302,7 @@ namespace CTRPluginFramework {
         u8 unkFlag126 : 1; //0x20
         u8 unkFlag127 : 1; //0x40
         u8 unkFlag128 : 1; //0x80
-
+    //Offset: 0x326A74B6
         u8 unkFlag129 : 1; //0x01
         u8 unkFlag130 : 1; //0x02
         u8 unkFlag131 : 1; //0x04
@@ -310,16 +311,16 @@ namespace CTRPluginFramework {
         u8 unkFlag134 : 1; //0x20
         u8 unkFlag135 : 1; //0x40
         u8 unkFlag136 : 1; //0x80
-
+    //Offset: 0x326A74B7
         u8 unkFlag137 : 1; //0x01
         u8 hasStudiedLessonToday : 1; //0x02
         u8 unkFlag139 : 1; //0x04
-        u8 unkFlag140 : 1; //0x08
+        u8 SearchItemsIntroduction : 1; //0x08
         u8 unkFlag141 : 1; //0x10
-        u8 unkFlag142 : 1; //0x20
+        u8 EmoticonsUnlocked : 1; //0x20
         u8 unkFlag143 : 1; //0x40
         u8 unkFlag144 : 1; //0x80
-
+    //Offset: 0x326A74B8
         u8 unkFlag145 : 1; //0x01
         u8 unkFlag146 : 1; //0x02
         u8 unkFlag147 : 1; //0x04
@@ -328,16 +329,16 @@ namespace CTRPluginFramework {
         u8 unkFlag150 : 1; //0x20
         u8 unkFlag151 : 1; //0x40
         u8 unkFlag152 : 1; //0x80
-
+    //Offset: 0x326A74B9
         u8 unkFlag153 : 1; //0x01
         u8 unkFlag154 : 1; //0x02
         u8 unkFlag155 : 1; //0x04
         u8 unkFlag156 : 1; //0x08
         u8 unkFlag157 : 1; //0x10
         u8 unkFlag158 : 1; //0x20
-        u8 unkFlag159 : 1; //0x40
+        u8 unkFlag159 : 1; //0x40 //1 if day is going, 0 if day is over ?
         u8 unkFlag160 : 1; //0x80
-
+    //Offset: 0x326A74BA
         u8 unkFlag161 : 1; //0x01
         u8 unkFlag162 : 1; //0x02
         u8 unkFlag163 : 1; //0x04
@@ -346,7 +347,7 @@ namespace CTRPluginFramework {
         u8 unkFlag166 : 1; //0x20
         u8 unkFlag167 : 1; //0x40
         u8 unkFlag168 : 1; //0x80
-
+    //Offset: 0x326A74BB
         u8 unkFlag169 : 1; //0x01
         u8 unkFlag170 : 1; //0x02
         u8 unkFlag171 : 1; //0x04
@@ -370,7 +371,8 @@ namespace CTRPluginFramework {
         u8 unk8[0xC]; //0x1BFA88 some struct data (at 0x49BBD0)
         Player_Features features; //0x1BFA94
         Player_Outfit outfit; //0x1BFA9A
-        u16 padding; //0x1BFAB6
+        u8 unkD; //0x1BFAB6
+        u8 paddingMaybe; //0x1BFAB7
         ACHHD_Pattern patterns[120]; //0x1BFAB8 (size: 0x3F480)
         u8 unk9[0x78]; //0x1FEF38
         PlayerID playerInfo; //0x1FEFB0
@@ -464,24 +466,6 @@ namespace CTRPluginFramework {
         UnknownStruct0 unkStruct; //0x2BE920 some struct
         u8 unk2[0x12]; //0x2BE92A
     };
-
-    /*
-    0xFE908 Ceiling Decor.
-	0xFE910 Even More Designs.
-
-	0xFE914 Windows and More. = 0x2BE544
-
-    0xFE918 Happy Home Camera.
-	0xFE91C Sound Scenery. = 0x2BE548
-	0xFE920 Refurbishing.
-    0xFE924 Styling Machine.
-	0xFE92C World Insects.
-	0xFE934 World Fish.
-	0xFE93C Ancient Fossils.
-	0xFE944 Gyroids.
-	0xFE94C Art Collection.
-	0xFE954 Choosing a Layout.
-    */
 }
 
 #pragma pack(pop)

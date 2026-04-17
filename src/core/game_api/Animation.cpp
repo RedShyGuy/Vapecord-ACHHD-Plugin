@@ -25,7 +25,7 @@ namespace CTRPluginFramework {
 	}*/
 
 	u8 Animation::GetCurrentAnim() {
-		u32 player = Game::GetPInstance();
+		u32 player = Game::GetAcPlayerInstance();
 		if(player == 0)
 			return 0;
 		
@@ -33,7 +33,7 @@ namespace CTRPluginFramework {
 	}
 
 	u16 Animation::GetCurrentSnake() {
-		u32 player = Game::GetPInstance();
+		u32 player = Game::GetAcPlayerInstance();
 		if(player == 0)
 			return 0;
 		
@@ -41,7 +41,7 @@ namespace CTRPluginFramework {
 	}
 
 	u32 Animation::GetAnimationInstance() {
-		u32 player = Game::GetPInstance();
+		u32 player = Game::GetAcPlayerInstance();
 		if(player == 0)
 			return 0;
 
@@ -50,7 +50,7 @@ namespace CTRPluginFramework {
 	}
 	
 	u32 Animation::ExecuteAnimation(u8 animID, u32 animInstance) {
-		u32 player = Game::GetPInstance();
+		u32 player = Game::GetAcPlayerInstance();
 		if(player == 0)
 			return 0;
 
@@ -62,7 +62,7 @@ namespace CTRPluginFramework {
 	}
 
 	bool Animation::AnimationWrapper(u8 animID, u8 emotion, u16 item, u16 snake, u16 sound) {
-		u32 player = Game::GetPInstance();
+		u32 player = Game::GetAcPlayerInstance();
 		if(player == 0)
 			return 0;
 

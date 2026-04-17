@@ -3,36 +3,33 @@
 #include "core/game_api/Game.hpp"
 
 namespace CTRPluginFramework {
-	void AppearanceUpdate() {
-		u32 i = Game::GetPInstance();
-		if(i == 0)
-			return;
-		
-		static Address appearanceUpdate(0x4F02FC);
-		appearanceUpdate.Call<void>(i, 0);
-	}
-	
 	void playerchange(MenuEntry *entry) {
 		static bool speedmode = false;
 		
 		if(speedmode ? Controller::IsKeysDown(entry->Hotkeys[0].GetKeys()) : Controller::IsKeysPressed(entry->Hotkeys[0].GetKeys())) {
-			static const u32 pData = Game::GetPlayerData();
+			//static const u32 pData = Game::GetPlayerData();
+			TakumiData* tData = Game::GetTakumiSaveData();
+			if(tData == nullptr) {
+				return;
+			}
+			ACHHD_Data* data = &tData->data;
+			ACHHD_Player* player = &data->player;
+
+			player->features.HairStyle = Utils::Random(0, 0x1F);
+			player->features.Tan = Utils::Random(0, 7);
+			player->features.HairColor = Utils::Random(0, 0xF);
+			player->features.EyeStyle = Utils::Random(0, 0xC);
+			player->features.EyeColor = Utils::Random(0, 5);
+
+			player->outfit.Hat = Utils::Random(0x266A, 0x273E);
+			player->outfit.Accessory = Utils::Random(0x273F, 0x2794);
+			player->outfit.TopWear = Utils::Random(0x2324, 0x2566);
+			player->outfit.BottomWear = Utils::Random(0x2567, 0x25E2);
+			player->outfit.Socks = Utils::Random(0x25E3, 0x2606);
+			player->outfit.Shoes = Utils::Random(0x2607, 0x2644);
+			//player->outfit.HeldItem = Utils::Random(0x3221, 0x3277);
 			
-			Process::Write8(pData + 0xC, Utils::Random(0, 0x1F)); //Hair
-			Process::Write8(pData + 0xD, Utils::Random(0, 7)); //Tan
-			Process::Write8(pData + 0xE, Utils::Random(0, 0xF)); //Hair Color
-			Process::Write8(pData + 0xF, Utils::Random(0, 0xC)); //Eyes
-			Process::Write8(pData + 0x10, Utils::Random(0, 5)); //Eye Color
-			
-			Process::Write16(pData + 0x12, Utils::Random(0x266A, 0x273E)); //Headwear
-			Process::Write16(pData + 0x16, Utils::Random(0x273F, 0x2794)); //Glasses
-			Process::Write16(pData + 0x1A, Utils::Random(0x2324, 0x2566)); //Shirt
-			Process::Write16(pData + 0x1E, Utils::Random(0x2567, 0x25E2)); //Pants
-			Process::Write16(pData + 0x22, Utils::Random(0x25E3, 0x2606)); //Socks
-			Process::Write16(pData + 0x26, Utils::Random(0x2607, 0x2644)); //Shoes
-			//Process::Write16(pData + 0x2A, Utils::Random(0x3221, 0x3277)); //Tool
-			
-			AppearanceUpdate();
+			Game::AppearanceUpdate();
 			Sleep(Milliseconds(150));
 		}
 

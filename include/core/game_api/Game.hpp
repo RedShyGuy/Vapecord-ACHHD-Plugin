@@ -1,6 +1,7 @@
 #pragma once
 
 #include <CTRPluginFramework.hpp>
+#include "core/game_api/GameStructs.hpp"
 
 namespace CTRPluginFramework {
 	namespace Game {
@@ -13,11 +14,12 @@ namespace CTRPluginFramework {
 		0x49C984 setHairStyle(u8 hairStyleId);
 		*/
 
+		void 				AppearanceUpdate();
 		bool				IsRoomLoading();
-		u32					GetTakumi();
-		u32					GetPlayerData();
-		u32					GetPlayerOffset();
-		u32 				GetPInstance();
+		TakumiData*			GetTakumiSaveData();
+		ACHHD_Data*			GetSaveData();
+		ACHHD_Player*		GetPlayerSaveData();
+		u32 				GetAcPlayerInstance();
 		u32					GetCurrentMap();
 		u8 					GetStageID();
 		u32 				*GetItemAtWorldCoords(WorldCoord worldCoords);

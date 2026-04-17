@@ -19,22 +19,22 @@ namespace CTRPluginFramework {
 			switch(mode) {
 				default: break;
 				case 0:
-					OSD::Notify("Animation Mode", Color::Red);
+					OSD::NotifySysFont("Animation Mode", Color::Red);
 					mode++;
 					setmode = 1;
 				break;
 				case 1:
-					OSD::Notify("Emotion Mode", Color::Orange);
+					OSD::NotifySysFont("Emotion Mode", Color::Orange);
 					mode++;
 					setmode = 2;
 				break;
 				case 2:
-					OSD::Notify("Item Mode", Color::Magenta);
+					OSD::NotifySysFont("Item Mode", Color::Magenta);
 					mode++;
 					setmode = 3;
 				break;
 				case 3:
-					OSD::Notify("Snake Mode", Color::Yellow);
+					OSD::NotifySysFont("Snake Mode", Color::Yellow);
 					mode = mode - 3;
 					setmode = 4;
 				break;

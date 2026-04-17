@@ -14,7 +14,6 @@ namespace CTRPluginFramework {
     };
 
     enum class SubFolder : u8 {
-        PlayerSave = 0,
-        None
+        None = 0
     };
 }

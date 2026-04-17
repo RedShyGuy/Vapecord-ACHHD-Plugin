@@ -156,6 +156,9 @@ namespace CTRPluginFramework {
 	/////////////////////
 		MenuFolder *SAVEC = CreateFolder(FolderType::Save);
 		SAVEC->Append(CreateEntry(TextID::SAVE_SETTINGS, nullptr, SaveSettings, TextID::SAVE_SETTINGS_NOTE, MenuEntryId::SaveBackupSettings));
+		SAVEC->Append(CreateEntry(TextID::HANDBOOK_CHEAT, nullptr, UnlockAllHappyHomeHandbookLessons, TextID::HANDBOOK_CHEAT_NOTE, MenuEntryId::SaveHandbookCheat));
+		SAVEC->Append(CreateEntry(TextID::NAME_EDITOR, nullptr, NameEditor, TextID::NAME_EDITOR_NOTE, MenuEntryId::SaveNameEditor));
+		SAVEC->Append(CreateEntry(TextID::PLAYER_APPEARANCE, nullptr, AppearanceEditor, TextID::PLAYER_APPEARANCE_NOTE, MenuEntryId::SaveAppearanceEditor));
 		menu->Append(SAVEC);
 		
 	/////////////////////////
@@ -181,15 +184,10 @@ namespace CTRPluginFramework {
 	/*Player Codes Folder*/
 	///////////////////////
 		MenuFolder *PLAYC = CreateFolder(FolderType::Player);
-	////////////////////////////
-	/*Player Save Codes Folder*/
-	////////////////////////////
-		MenuFolder *PSAVEC = CreateFolder(FolderType::Player, SubFolder::PlayerSave);
-		PSAVEC->Append(EntryWithHotkey(CreateEntry(TextID::PLAYER_RANDOMIZER, playerchange, TextID::PLAYER_RANDOMIZER_NOTE, MenuEntryId::PlayerSaveRandomizer), { 
+		PLAYC->Append(EntryWithHotkey(CreateEntry(TextID::PLAYER_RANDOMIZER, playerchange, TextID::PLAYER_RANDOMIZER_NOTE, MenuEntryId::PlayerRandomizer), { 
 			NamedHotkey(Key::L | Key::DPadRight, TextID::HK_RANDOMIZE_OUTFIT), 
 			NamedHotkey(Key::L | Key::DPadLeft, TextID::HK_SET_SPEED) 
 		}));
-		PLAYC->Append(PSAVEC);
 		menu->Append(PLAYC);
 
 	//////////////////////////
@@ -216,6 +214,7 @@ namespace CTRPluginFramework {
 			NamedHotkey(Key::L | Key::DPadRight, TextID::HK_SELECT_ITEM_ID), 
 			NamedHotkey(Key::L | Key::DPadDown, TextID::HK_DROP_ITEM) 
 		}));
+		MISC->Append(CreateEntry(TextID::AMIIBO_SPOOFER, AmiiboSpoofer, TextID::AMIIBO_SPOOFER_NOTE, MenuEntryId::MiscAmiiboSpoofer));
 		MISC->Append(CreateEntry(TextID::FAST_GAME_SPEED, fastgamespeed, TextID::FAST_GAME_SPEED_NOTE, MenuEntryId::MiscFastGameSpeed));
 		menu->Append(MISC);
 
@@ -228,6 +227,8 @@ namespace CTRPluginFramework {
 			NamedHotkey(Key::L | Key::DPadRight, TextID::HK_INPUT_FUNCTION_DATA), 
 			NamedHotkey(Key::L | Key::DPadDown, TextID::HK_CALL_FUNCTION) 
 		}));
+		DEVC->Append(CreateEntry(TextID::PLAYER_FLAG_MONITOR, PlayerFlagsMonitor, SetPlayerFlags, TextID::PLAYER_FLAG_MONITOR_NOTE, MenuEntryId::DevPlayerFlagsMonitor));
+		DEVC->Append(new MenuEntry("Test Entry", TestEntry, ""));
 		menu->Append(DEVC);
 	#endif
 

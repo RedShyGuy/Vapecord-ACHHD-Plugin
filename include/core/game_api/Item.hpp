@@ -5,8 +5,6 @@
 #pragma pack(push, 1)
 
 namespace CTRPluginFramework {
-    struct ItemNamePack;
-
     struct Item {
         u16 ID;
         u16 Flags;
@@ -45,22 +43,10 @@ namespace CTRPluginFramework {
             ID = v_ID;
             Flags = v_Flags;
         }
-
     public:
         std::string GetName(void);
         bool isValid(bool IsDropped = true);
-
-    private:
-        bool isFlagValid(bool IsDropped = true);
-        bool hasNoName(void);
     };
-
-    struct ItemNamePack {
-		std::string name;
-		u16 ID;
-	};
-
-    //extern const ItemNamePack IllegalItemNameList[296];
 }
 
 #pragma pack(pop)
